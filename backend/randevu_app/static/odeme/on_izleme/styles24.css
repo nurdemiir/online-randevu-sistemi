@@ -1,0 +1,393 @@
+@import url('../styles.css');
+
+/* Genel Ayarlar */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fc;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Tab Butonları */
+.tab-bar {
+    display: flex;
+    justify-content: space-between;
+    max-width: 845px;
+    margin: 0 auto 20px auto;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.tab-bar-wrapper {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.tab {
+    height: 50px;
+    flex: 1;
+    padding: 12px 15px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    background: none;
+    border: none;
+    background-color: #fff;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+/* Aktif olmayan sekmeler için stil */
+.tab:not(.active) {
+    background-color: #fff;
+    color: #333;
+    pointer-events: all; /* Tıklanabilir hale getir */
+}
+
+.tab:hover {
+    background: #f0f0f0;
+    color: #007BFF;
+}
+
+.tab.active {
+    background: #007BFF;
+    color: #fff;
+}
+
+/* Tıklama efekti */
+.tab:active {
+    transform: scale(0.98);
+}
+
+/* Navigasyon Butonları */
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    max-width: 845px;
+    margin: 0 auto 20px auto;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 50px;
+}
+
+.navigation-buttons button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.navigation-buttons button:hover {
+    background-color: #0056b3;
+}
+
+a {
+    color: #007BFF;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#preview p strong {
+    font-weight: bold;
+    color: #333;
+}
+
+#preview {
+    margin-bottom: 2rem;
+}
+
+/* Onay Bölümü */
+#confirmation-section {
+    text-align: center;
+}
+
+#confirm-button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#confirm-button:hover {
+    background-color: #0056b3;
+}
+
+button:active {
+    transform: scale(0.98);
+    transition: transform 0.1s;
+}
+
+/* Aktif olmayan sekmeler için tıklama efekti */
+.tab {
+    cursor: pointer;
+}
+
+.tab:not(.active):active {
+    transform: scale(0.98);
+    transition: transform 0.1s;
+}
+
+.tab-bar button:not(.active) {
+    pointer-events: all; /* Tıklama efekti için etkinleştir */
+}
+
+/* Mobil uyumlu düzenlemeler */
+@media (max-width: 768px) {
+    /* Tab Butonları */
+    .tab-bar {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .tab-bar .tab {
+        width: auto;
+    }
+
+    /* Navigasyon Butonları */
+    .navigation-buttons {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 0 20px;
+    }
+
+    .navigation-buttons button {
+        margin-bottom: 10px;
+        font-size: 14px;
+        width: 20%;
+    }
+}
+
+/* Ön İzleme Kartı Stilleri */
+.preview-card {
+    background: var(--background);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+}
+
+.preview-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.preview-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.preview-section h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.preview-section h3 i {
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+}
+
+.info-value {
+    font-size: 1rem;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.price-summary {
+    background: var(--background-light);
+    border-radius: var(--border-radius-sm);
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.price-row:last-child {
+    margin-bottom: 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.price-label {
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+.price-value {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.total-price {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* Onay Kutusu */
+.confirmation-box {
+    background: var(--background-light);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-top: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+.confirmation-text {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.confirmation-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.confirmation-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 0.25rem;
+}
+
+.confirmation-checkbox label {
+    color: var(--text-color);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Butonlar */
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-confirm {
+    background: var(--success);
+    color: white;
+    padding: 0.875rem 2rem;
+    border-radius: var(--border-radius-sm);
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-confirm:hover {
+    background: #0d9669;
+    transform: translateY(-2px);
+}
+
+.btn-edit {
+    background: var(--background);
+    color: var(--text-color);
+    padding: 0.875rem 2rem;
+    border-radius: var(--border-radius-sm);
+    font-weight: 500;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-edit:hover {
+    background: var(--background-light);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .preview-card {
+        padding: 1.5rem;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .price-summary {
+        padding: 1.25rem;
+    }
+
+    .confirmation-box {
+        padding: 1.25rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn-confirm,
+    .btn-edit {
+        width: 100%;
+        padding: 0.75rem 1rem;
+    }
+}

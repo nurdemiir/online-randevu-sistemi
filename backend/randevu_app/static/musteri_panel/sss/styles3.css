@@ -1,0 +1,250 @@
+/* Genel ayarlar */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    margin: 0;              
+    padding: 0;  
+}
+
+.container {
+    display: flex;
+    margin-left: 320px; 
+    padding: 20px;
+}
+
+.sidebar {
+    background-color: #ffffff;
+    padding: 20px;
+    width: 300px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 0 8px 8px 0;
+}
+
+.sidebar img {
+    width: 100%;  /* Sidebar genişliğini kaplayacak şekilde ayarlanır */
+    height: 200px; /* Sabit bir yükseklik ayarlanır */
+    object-fit: cover; /* Görüntü, çerçeveye düzgün şekilde sığar */
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.sidebar h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.sidebar h2 {
+    font-size: 20px;
+    color: #007BFF;
+    margin-bottom: 20px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.sidebar nav ul li {
+    margin: 15px 0;
+}
+
+.sidebar nav ul li a {
+    text-decoration: none;
+    color: #007BFF;
+    font-size: 18px;
+    padding: 10px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+.sidebar nav ul li a:active {
+    transform: scale(0.98);
+}
+
+.main-content {
+    flex-grow: 1;
+}
+
+.main-content h2 {
+    font-size: 30px;
+    margin-bottom: 30px;
+    color: #333;
+    margin-top: 20px;
+}
+
+.preview-box {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+/* Akordeon Stil */
+.accordion {
+    background-color: #f8f9fa; /* Keep default background */
+    color: #333; /* Text color */
+    cursor: pointer;
+    padding: 15px;
+    width: 100%;
+    border: 1px solid #ccc;
+    text-align: left;
+    outline: none;
+    font-size: 18px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    position: relative;
+    display: flex; /* Use flex to align items */
+    justify-content: space-between; /* Space between content and symbol */
+    align-items: center; /* Center vertically */
+    transition: color 0.3s ease; /* Only change text color on hover */
+}
+
+.accordion:hover {
+    color: #007BFF; /* Change text color on hover */
+}
+
+.symbol {
+    margin-left: auto; /* Move symbol to the right */
+    color: #333; /* Default color for the symbol */
+}
+
+.panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background-color: #f1f1f1;
+    padding: 0 18px;
+    border-radius: 0 0 8px 8px;
+    margin-bottom: 10px;
+}
+
+.panel p {
+    padding: 10px;
+    margin: 0;
+    font-size: 16px;
+}
+
+
+/* --- Mobil Menü --- */
+.mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 28px;
+    background: none;
+    border: none;
+    color: #007BFF;
+    z-index: 2001;
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 60px;
+    right: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    z-index: 2000;
+    width: 220px;
+}
+
+.mobile-menu.open {
+    display: block;
+}
+
+.mobile-menu ul {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+}
+
+.mobile-menu ul li {
+    margin-bottom: 10px;
+}
+
+.mobile-menu ul li a {
+    display: block;
+    color: #007BFF;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-menu ul li a:hover {
+    background-color: #f0f0f0;
+}
+
+/* Mobil Header */
+.mobile-header {
+    display: none;
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    padding: 16px 16px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1002;
+}
+
+.mobile-header img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.mobile-header h1 {
+    font-size: 30px;
+    color: #333;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Mobil cihazlar için medya sorgusu */
+@media screen and (max-width: 768px) {
+    .container {
+        margin-left: 0;
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .main-content {
+        padding: 16px;
+        margin-left: 0;
+    }
+}

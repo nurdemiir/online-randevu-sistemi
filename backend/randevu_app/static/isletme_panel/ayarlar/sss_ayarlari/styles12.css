@@ -1,0 +1,709 @@
+/* Genel Ayarlar */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    margin-left: 320px;
+    padding: 20px;
+    padding-top: 55px;
+    flex-direction: column; 
+}
+
+.sidebar {
+    background-color: #ffffff;
+    padding: 20px;
+    width: 300px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 0 8px 8px 0;
+    padding-bottom: 20px; /* Aşağıya boşluk ekle */
+}
+
+/* Sidebar'daki Fotoğraf */
+.sidebar img {
+    width: 100%;  /* Sidebar genişliğini kaplayacak şekilde ayarlanır */
+    height: 200px; /* Sabit bir yükseklik ayarlanır */
+    object-fit: cover; /* Görüntü, çerçeveye düzgün şekilde sığar */
+    border-radius: 8px;
+    margin-bottom: 20px;
+    
+}
+
+.sidebar h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.sidebar h2 {
+    font-size: 20px;
+    color: #218838;
+    margin-bottom: 20px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.sidebar nav ul li {
+    margin: 15px 0;
+}
+
+.sidebar nav ul li a {
+    text-decoration: none;
+    color: #218838;
+    font-size: 18px;
+    padding: 10px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.sidebar nav ul li a:active {
+    transform: scale(0.98);
+}
+
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #ffff;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.on-izleme {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+
+h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.faq-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.faq-form label {
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.faq-form input, .faq-form textarea {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 50%;
+}
+
+textarea {
+    height: 100px;
+}
+
+.add-btn {
+    width: 100px;
+    margin-top: 10px;
+    padding: 15px;
+    font-size: 17px;
+    background-color:  #218838;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-btn:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+.preview {
+    margin-top: 40px;
+}
+
+.preview h2 {
+    font-size: 24px;
+    color: #1a1a1a;
+}
+
+.preview-box {
+    border: 1px solid #e0dede; /* Kenarlık genişletildi */
+    padding: 20px;
+    width: 100%;
+    border-radius: 5px;
+    background-color: #ffffff;
+}
+
+.preview-box p {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.faq-item {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.faq-item button {
+    margin: 5px 0;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+
+
+.faq-item .edit-btn {
+    background-color: #ffcc00;
+    width: 70px;
+}
+
+.faq-item .edit-btn:hover {
+    background-color: #e6b800;
+}
+
+.faq-item .delete-btn {
+    background-color: #ff3333;
+    width: 70px;
+}
+
+.faq-item .delete-btn:hover {
+    background-color: #cc0000;
+}
+
+/* Akordiyon başlıkları için stil ayarları */
+.accordion-header {
+    background-color: #f8f9fa !important;/* Sorunun bulunduğu yerin arka plan rengi */
+    color: #000 !important;
+    cursor: pointer;
+    padding: 15px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: left;
+    outline: none;
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.accordion-header:hover {
+    background-color: #28a745 !important; /* Fareyle üzerine gelindiğinde arka planı yeşil yapar */
+    color: #000000; /* Yazı rengini siyah tutar */
+    transition: background-color 0.3s ease; /* Geçişin daha pürüzsüz olması için */
+}
+
+.accordion-header.active {
+    background-color:#28a745 !important;
+    border: 1px solid #ccc;
+}
+
+.accordion-header:after {
+    content: '+';
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    transition: transform 0.3s ease;
+}
+
+.accordion-header.active:after {
+    content: '-';
+    transform: rotate(0deg);
+}
+
+.accordion-content {
+    display: block; /* Veya en azından başlangıçta görünür yapmak için */
+    margin-top: 8px;
+    background-color: #f7f7f7;
+    padding: 10px;
+    border-radius: 8px;
+    padding: 0 15px;
+    border-radius: 0 0 5px 5px;
+}
+
+.icon-btn {
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 16px;
+    color: #333;
+}
+
+.icon-btn:hover {
+    background-color: #ccc;
+}
+
+.faq-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #ddd;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+}
+
+
+.faq-item {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.faq-item button {
+    margin: 5px 0;
+    padding: 10px;
+    background-color: #fafafa;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+
+.faq-item .edit-btn, .faq-item .delete-btn {
+    width: 100px;
+    margin-right: 10px; /* Butonlar arasındaki boşluk */
+}
+
+
+.faq-item .delete-btn {
+    background-color: #ff3333;
+}
+
+.faq-item .delete-btn:hover {
+    background-color: #cc0000;
+}
+
+.faq-item button {
+    margin: 5px 5px 5px 0; /* Aralarındaki boşluğu artır */
+}
+
+.faq-item button:last-child {
+    margin-right: 0; /* Son butonun sağında boşluk bırakma */
+}
+
+
+/* Başarı mesajı için stil */
+.success-message {
+    display: none; /* Başlangıçta gizli olacak */
+    position: relative;
+    margin-top: 10px; /* Butondan biraz uzak olsun */
+    padding: 10px;
+    background-color: #28a745; /* Yeşil renk */
+    color: white;
+    font-size: 14px; /* Küçük yazı tipi */
+    border-radius: 5px;
+    z-index: 1000; /* Diğer içeriklerin üstünde görünmesi için */
+    text-align: center;
+}
+
+.success-message.show {
+    display: block; /* Gösterildiğinde */
+}
+
+/* --- PROFESYONEL TAB BAR --- */
+.tab-bar {
+    height: 64px;
+}
+.tab-bar a {
+    height: 52px;
+    padding: 12px 32px;
+}
+@media (max-width: 900px) {
+    .tab-bar {
+        height: 54px;
+    }
+    .tab-bar a {
+        height: 44px;
+        padding: 10px 18px;
+    }
+}
+@media (max-width: 600px) {
+    .tab-bar {
+        height: 48px;
+    }
+    .tab-bar a {
+        height: 38px;
+        padding: 9px 12px;
+    }
+}
+
+
+/* --- Mobil Menü --- */
+.mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 28px;
+    background: none;
+    border: none;
+    background-color: white !important;
+    color: #45a049;
+    z-index: 2001;
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 60px;
+    right: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    z-index: 2000;
+    width: 220px;
+}
+
+.mobile-menu.open {
+    display: block;
+}
+
+.mobile-menu ul {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+}
+
+.mobile-menu ul li {
+    margin-bottom: 10px;
+}
+
+.mobile-menu ul li a {
+    display: block;
+    color: inherit !important;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-menu ul li a:hover {
+    background-color: transparent !important;
+    color: inherit !important;
+}
+
+/* Mobil Header */
+.mobile-header {
+    display: none;
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    padding: 16px 16px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1002;
+}
+
+.mobile-header img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.mobile-header h1 {
+    font-size: 30px;
+    color: #333;
+    margin: 0;
+    font-weight: 600;
+}
+
+.mobile-menu .has-submenu > a::after {
+    content: " ▼";
+    font-size: 12px;
+}
+
+.mobile-menu .submenu {
+    display: none;
+    padding-left: 15px;
+}
+
+.mobile-menu .has-submenu.open .submenu {
+    display: block;
+}
+
+.mobile-menu .submenu li a {
+    padding: 8px 10px;
+    font-size: 14px;
+    display: block;
+    color: #333;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+.mobile-menu .submenu li a:hover {
+    background-color: #e0e0e0;
+}
+
+/* Mobil uyumluluk */
+@media screen and (max-width: 768px) {
+    .container {
+        margin-left: 0;
+        flex-direction: column;
+        padding: 0;
+        width: 100%;
+        
+    }
+
+    .tab-bar{
+        display: none;
+    }
+
+    body {
+        overflow-x: hidden;
+    }
+
+    .sidebar {
+        display: none;
+        
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 16px;
+    }
+
+    .main-content h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: left;
+    }
+    
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .mobile-header {
+        display: flex;
+        padding-top: calc(env(safe-area-inset-top, 0px) + 16px);
+
+    }
+
+    .faq-form input, .faq-form textarea {
+        width: 100%;
+    }
+
+    .preview-box {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: 24px;
+    }
+
+    .sidebar h1 {
+        font-size: 20px;
+    }
+
+    .sidebar h2 {
+        font-size: 18px;
+    }
+
+    .faq-form label {
+        font-size: 16px;
+    }
+
+    .faq-form input, .faq-form textarea {
+        font-size: 14px;
+    }
+
+    .add-btn {
+        width: 100px;
+        font-size: 16px;
+    }
+
+    .preview-box p {
+        font-size: 16px;
+    }
+}
+
+/* --- STİL İYİLEŞTİRMELERİ (styles6.css tarzında) --- */
+
+.main-content {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 30px;
+    margin-bottom: 30px;
+    margin-top: 36px;
+}
+@media (max-width: 900px) {
+    .main-content {
+        padding: 16px;
+        margin-top: 28px;
+    }
+}
+@media (max-width: 600px) {
+    .main-content {
+        padding: 8px;
+        margin-top: 20px;
+    }
+}
+
+.faq-form, .preview-box {
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(33,136,56,0.08);
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+h2 {
+    font-size: 24px;
+    color: #218838;
+    border-bottom: 2px solid #218838;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.faq-form label {
+    font-size: 15px;
+    color: #2c3e50;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.faq-form input, .faq-form textarea {
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 15px;
+    margin-bottom: 12px;
+    background: #fff;
+    transition: border 0.2s;
+}
+
+.faq-form input:focus, .faq-form textarea:focus {
+    border: 1.5px solid #218838;
+    outline: none;
+}
+
+.add-btn, .edit-btn, .delete-btn {
+    background: linear-gradient(135deg, #218838 0%, #28a745 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+    margin-right: 8px;
+}
+
+.add-btn:hover, .edit-btn:hover, .delete-btn:hover {
+    background: #28a745;
+    box-shadow: 0 4px 16px rgba(33,136,56,0.15);
+}
+
+.faq-item {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(33,136,56,0.08);
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    transition: box-shadow 0.2s;
+}
+
+.faq-item:hover {
+    box-shadow: 0 6px 24px rgba(33,136,56,0.13);
+}
+
+.success-message {
+    color: #fff;
+    background: #28a745;
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-size: 14px;
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .main-content, .on-izleme, .faq-form, .preview-box {
+        padding: 12px;
+    }
+    .faq-item {
+        padding: 12px 10px;
+    }
+}
+
+.faq-item .edit-btn, .faq-item .delete-btn {
+    background-color: #218838;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 10px;
+    width: 100px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    transition: background 0.2s;
+}
+.faq-item .edit-btn:hover, .faq-item .delete-btn:hover {
+    background-color: #28a745;
+    color: #fff;
+}
+
+

@@ -1,0 +1,565 @@
+/* Genel Ayarlar */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    margin-left: 320px;
+    padding: 20px;
+    padding-top: 55px;
+    flex-direction: column; 
+}
+
+.sidebar {
+    background-color: #ffffff;
+    padding: 20px;
+    width: 300px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 0 8px 8px 0;
+    padding-bottom: 20px; /* Aşağıya boşluk ekle */
+}
+
+/* Sidebar'daki Fotoğraf */
+.sidebar img {
+    width: 100%;  /* Sidebar genişliğini kaplayacak şekilde ayarlanır */
+    height: 200px; /* Sabit bir yükseklik ayarlanır */
+    object-fit: cover; /* Görüntü, çerçeveye düzgün şekilde sığar */
+    border-radius: 8px;
+    margin-bottom: 10px;
+    
+}
+
+.sidebar h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.sidebar h2 {
+    font-size: 20px;
+    color: #218838;
+    margin-bottom: 20px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.sidebar nav ul li {
+    margin: 15px 0;
+}
+
+.sidebar nav ul li a {
+    text-decoration: none;
+    color: #218838;
+    font-size: 18px;
+    padding: 10px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.sidebar nav ul li a:active {
+    transform: scale(0.98);
+}
+
+.main-content {
+    flex-grow: 1;
+    position: relative; /* Absolute konumlandırma için relative */
+}
+
+h1 {
+    font-size: 28px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.admin-panel {
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 100%;
+}
+
+.admin-panel h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.admin-panel input[type="file"] {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.admin-panel button {
+    padding: 10px 15px;
+    background-color:#218838;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.admin-panel button:hover {
+    background-color: #28a745;
+}
+
+.update-panel {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 100%;
+}
+
+.update-panel h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.update-panel .box {
+    display: block; /* Alt alta görünmelerini sağlamak için */
+    margin-bottom: 10px; /* Aralarına boşluk eklemek için isteğe bağlı */
+}
+
+.new-h1, .new-h2 {
+    border-radius: 100px;
+}
+
+.title-update {
+    margin-top: 40px; /* Form ile üstteki içerik arasında boşluk bırak */
+    padding: 20px; /* İçerik alanı için iç boşluk */
+    background-color: #ffffff; /* Arka plan rengi */
+    border-radius: 8px; /* Yuvarlatılmış köşeler */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Gölge efekti */
+}
+
+.title-update h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.title-update input {
+    width: calc(100% - 10px); /* Genişliği ayarla */
+    padding: 8px;
+    margin-bottom: 10px; /* Alt boşluk */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.title-update button {
+    width: 100%; /* Buton genişliği %100 */
+    padding: 10px;
+    background-color: #218838;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.title-update button:hover {
+    background-color: #28a745;
+}
+
+.update-panel button {
+    padding: 10px 15px;
+    background-color:#218838;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.update-panel button:hover {
+    background-color: #28a745;
+}
+
+
+/* Yeni stil tanımlamaları */
+.update-panel input[type="text"] {
+    width: calc(50% - 20px); /* Genişliği ayarla ve yanlarda boşluk bırak */
+    padding: 12px 15px; /* İç boşluk */
+    margin-bottom: 15px; /* Alt boşluk */
+    border: 1px solid #ccc; /* Kenar rengi */
+    border-radius: 8px; /* Kenar yuvarlama */
+    font-size: 16px; /* Yazı boyutu */
+    transition: border-color 0.3s, box-shadow 0.3s; /* Geçiş efekti */
+}
+
+/* Input alanına odaklanıldığında görünüm */
+.update-panel input[type="text"]:focus {
+    border-color: #218838; /* Odaklandığında kenar rengi */
+    box-shadow: 0 0 5px rgba(33, 136, 56, 0.5); /* Odaklandığında gölge efekti */
+    outline: none; /* Varsayılan odak çerçevesini kaldır */
+}
+
+/* Tab-bar stil */
+.tab-bar {
+    background: linear-gradient(90deg, #218838 0%, #43e97b 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 14px;
+    margin-bottom: 28px;
+    height: 68px;
+    box-shadow: 0 4px 18px rgba(33,136,56,0.10);
+    padding: 0 16px;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+.tab-bar::-webkit-scrollbar {
+    height: 6px;
+}
+.tab-bar::-webkit-scrollbar-thumb {
+    background: #b2f2dd;
+    border-radius: 6px;
+}
+.tab-bar a {
+    flex: 1;
+    min-width: 120px;
+    position: relative;
+    color: #fff;
+    text-decoration: none;
+    padding: 14px 36px;
+    border-radius: 10px 10px 0 0;
+    font-size: 18px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.08);
+    margin-right: 6px;
+    transition: all 0.22s cubic-bezier(.4,1.3,.6,1);
+    box-shadow: 0 2px 8px rgba(33,136,56,0.04);
+    display: flex;
+    align-items: center;
+    height: 56px;
+}
+.tab-bar a.active, .tab-bar a[aria-current="page"] {
+    background: #fff;
+    color: #218838;
+    box-shadow: 0 6px 24px rgba(33,136,56,0.13);
+    z-index: 2;
+    border-bottom: 3px solid #43e97b;
+}
+.tab-bar a:hover:not(.active):not([aria-current="page"]) {
+    background: rgba(255,255,255,0.18);
+    color: #eafff2;
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 4px 16px rgba(33,136,56,0.10);
+}
+@media (max-width: 900px) {
+    .tab-bar {
+        height: 58px;
+    }
+    .tab-bar a {
+        height: 48px;
+        padding: 12px 22px;
+    }
+}
+@media (max-width: 600px) {
+    .tab-bar {
+        height: 52px;
+    }
+    .tab-bar a {
+        height: 42px;
+        padding: 10px 14px;
+    }
+}
+
+/* Diğer stiller */
+.box {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 8px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* --- Mobil Menü --- */
+.mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 28px;
+    background: none;
+    border: none;
+    background-color: white !important;
+    color: #45a049;
+    z-index: 2001;
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 60px;
+    right: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    z-index: 2000;
+    width: 220px;
+}
+
+.mobile-menu.open {
+    display: block;
+}
+
+.mobile-menu ul {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+}
+
+.mobile-menu ul li {
+    margin-bottom: 10px;
+}
+
+.mobile-menu ul li a {
+    display: block;
+    color: inherit !important;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-menu ul li a:hover {
+    background-color: transparent !important;
+    color: inherit !important;
+}
+
+/* Mobil Header */
+.mobile-header {
+    display: none;
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    padding: 16px 16px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1002;
+}
+
+.mobile-header img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.mobile-header h1 {
+    font-size: 30px;
+    color: #333;
+    margin: 0;
+    font-weight: 600;
+}
+
+.mobile-menu .has-submenu > a::after {
+    content: " ▼";
+    font-size: 12px;
+}
+
+.mobile-menu .submenu {
+    display: none;
+    padding-left: 15px;
+}
+
+.mobile-menu .has-submenu.open .submenu {
+    display: block;
+}
+
+.mobile-menu .submenu li a {
+    padding: 8px 10px;
+    font-size: 14px;
+    display: block;
+    color: #333;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+.mobile-menu .submenu li a:hover {
+    background-color: #e0e0e0;
+}
+
+/* Mobil Uyum */
+@media screen and (max-width: 768px) {
+    .container {
+        margin-left: 0;
+        flex-direction: column;
+        padding: 0;
+        width: 100%;
+        
+    }
+
+    .tab-bar{
+        display: none;
+    }
+
+    body {
+        overflow-x: hidden;
+    }
+
+    .sidebar {
+        display: none;
+        
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 16px;
+    }
+
+    .main-content h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .admin-panel {
+        max-width: 100%;
+    }
+    
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .mobile-header {
+        display: flex;
+        padding-top: calc(env(safe-area-inset-top, 0px) + 16px);
+
+    }
+}
+
+/* --- STİL İYİLEŞTİRMELERİ (styles6.css tarzında) --- */
+
+.main-content {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 30px;
+    margin-bottom: 30px;
+    margin-top: 36px;
+}
+@media (max-width: 900px) {
+    .main-content {
+        padding: 16px;
+        margin-top: 28px;
+    }
+}
+@media (max-width: 600px) {
+    .main-content {
+        padding: 8px;
+        margin-top: 20px;
+    }
+}
+
+.admin-panel, .update-panel {
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(33,136,56,0.08);
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.admin-panel h2, .update-panel h2 {
+    font-size: 24px;
+    color: #218838;
+    border-bottom: 2px solid #218838;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+input[type="file"], input[type="text"] {
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 15px;
+    margin-bottom: 12px;
+    background: #fff;
+    transition: border 0.2s;
+}
+
+input[type="file"]:focus, input[type="text"]:focus {
+    border: 1.5px solid #218838;
+    outline: none;
+}
+
+button[type="submit"] {
+    background: linear-gradient(135deg, #218838 0%, #28a745 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+    width: 120px;
+}
+
+button[type="submit"]:hover {
+    background: #28a745;
+    box-shadow: 0 4px 16px rgba(33,136,56,0.15);
+}
+
+.box {
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #fff;
+    border: 1.5px solid #e0e0e0;
+    font-size: 15px;
+}
+
+@media (max-width: 768px) {
+    .main-content, .admin-panel, .update-panel {
+        padding: 12px;
+    }
+}

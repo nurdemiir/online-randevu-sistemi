@@ -1,0 +1,749 @@
+/* Genel Ayarlar */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    margin-left: 320px;
+    padding: 20px;
+    padding-top: 55px;
+    flex-direction: column; 
+}
+
+.sidebar {
+    background-color: #ffffff;
+    padding: 20px;
+    width: 300px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 0 8px 8px 0;
+    padding-bottom: 20px; /* Aşağıya boşluk ekle */
+}
+
+/* Sidebar'daki Fotoğraf */
+.sidebar img {
+    width: 100%;  /* Sidebar genişliğini kaplayacak şekilde ayarlanır */
+    height: 200px; /* Sabit bir yükseklik ayarlanır */
+    object-fit: cover; /* Görüntü, çerçeveye düzgün şekilde sığar */
+    border-radius: 8px;
+    margin-bottom: 10px;
+    
+}
+
+.sidebar h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.sidebar h2 {
+    font-size: 20px;
+    color: #218838;
+    margin-bottom: 20px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.sidebar nav ul li {
+    margin: 15px 0;
+}
+
+.sidebar nav ul li a {
+    text-decoration: none;
+    color: #218838;
+    font-size: 18px;
+    padding: 10px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.sidebar nav ul li a:active {
+    transform: scale(0.98);
+}
+
+.main-content {
+    position: relative;
+    flex-grow: 1;
+    
+}
+
+h1 {
+    font-size: 28px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.servis {
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden; /* İçeriğin taşmasını engelle */
+}
+
+.servis h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    overflow: hidden; /* Başlıkların taşmasını engeller */
+}
+
+#services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between service items */
+    overflow: hidden; /* İçeriğin taşmasını engelle */
+}
+
+.service-item {
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* İçeriğin taşmasını engelle */
+}
+
+.service-item h4 {
+    font-size: 20px;
+    color: #0056b3; /* Darker blue for the title */
+}
+
+.service-item p {
+    margin: 5px 0;
+}
+
+.service-item img {
+    border-radius: 5px; /* Rounded corners for images */
+    overflow: hidden; /* Görüntülerin taşmasını engelle */
+}
+
+
+.set {
+    margin-top: 10px;
+    display: block;          /* Flexbox ile hizalama */
+    flex-wrap: wrap;         /* Flex öğelerin sarılmasını sağlar */
+    gap: 20px;               /* Hizmetler arasındaki boşluk */
+    overflow: hidden; /* İçeriğin taşmasını engelle */
+
+}
+
+/* Update services list to single column layout */
+.set .service-item {
+    background-color: #fff !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    flex: 0 0 100%; /* Force each item to occupy full width */
+    max-width: 100%; /* Make sure it does not exceed full width */
+    overflow: hidden; /* Servis öğesinin taşmasını engeller */
+}
+
+/* Specific to preview section container */
+#set #services-list {
+    display: block; /* Default to block layout for vertical stacking */
+    gap: 15px; /* Keep space between items */
+    overflow: hidden; /* İçeriğin taşmasını engelle */
+}
+
+.set h2 {
+    font-size: 22px;
+    padding: 20px;
+    overflow: hidden; /* Başlıkların taşmasını engeller */
+}
+
+.set .service-item h4 {
+    margin-bottom: 10px;
+    overflow: hidden; /* Başlıkların taşmasını engeller */
+}
+
+.set .service-item p {
+    margin-bottom: 5px;
+    overflow: hidden; /* Paragrafların taşmasını engeller */
+}
+
+.set .service-item img {
+    display: none !important;
+}
+
+.time-info-box {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 25px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    margin-top: 30px;  /* Daha net boşluk */
+    padding: 20px 25px;
+    display: block;          /* Flexbox ile hizalama */
+    flex-wrap: wrap;         /* Flex öğelerin sarılmasını sağlar */
+    gap: 20px;               /* Hizmetler arasındaki boşluk */
+    overflow: hidden; /* İçeriğin taşmasını engelle */
+}
+
+.time-info-box h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #0056b3;
+}
+
+.time-info-box p {
+    margin: 6px 0;
+    font-weight: 500;
+}
+
+.time-info-box span {
+    font-weight: bold;
+    color: #0056b3;
+}
+
+
+/* Form ayarları */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden; /* Form elemanlarının taşmasını engelle */
+}
+
+label {
+    display: block;
+    color: #555;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    overflow: hidden; /* Etiketlerin taşmasını engeller */
+}
+
+/* Genişlik ve yüksekliği kısaltma ayarları */
+input[type="text"],
+textarea {
+    padding: 8px; /* İçerik boşluğunu azaltma */
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 14px; /* Yazı boyutunu azaltma */
+    width: 100%; /* Genişliği ayarlama (esnek) */
+    max-width: 700px; /* Maksimum genişlik */
+    overflow: hidden; /* Input ve textarea'nın taşmasını engelle */
+}
+
+textarea {
+    resize: vertical; /* Dikey boyutlandırmayı koruma */
+    height: 80px; /* Varsayılan yüksekliği ayarlama */
+}
+
+#save-time-button {
+    background-color: #28a745 !important;
+    margin-left: 0 !important;
+    display: inline-block !important;
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+}
+
+
+/* Buton ayarları */
+button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background-color:#28a745;
+    width: 100px;
+    height: 40px;
+    font-size: 16px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+    overflow: hidden; /* Butonların taşmasını engelle */
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+
+button.edit-btn {
+    background-color: #28a745; /* Green background for edit button */
+}
+
+button.delete-btn {
+    background-color: #dc3545; /* Red background for delete button */
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #a0a0a0; /* Light gray color */
+}
+
+.textarea-container {
+    position: relative;
+    width: 100%;
+}
+
+#char-count {
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    font-size: 0.85em;
+    color: #666;
+}
+
+.open_close {
+    margin-top: 30px;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* İçeriğin taşmasını engelle */
+}
+
+.open_close h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+    overflow: hidden; /* Başlıkların taşmasını engeller */
+}
+
+.open_close label {
+    display: block;
+    color: #555;
+    font-size: 16px;
+    margin-bottom: 10px;
+    overflow: hidden; /* Etiketlerin taşmasını engeller */
+}
+
+.open_close input[type="time"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    width: 160px;
+    margin-bottom: 20px;
+    background-color: #f8f9fa;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    overflow: hidden; /* Zaman alanlarının taşmasını engelle */
+}
+
+.open_close input[type="time"]:focus {
+    border-color: #28a745;
+    background-color: #e9f7e4;
+}
+
+.open_close button {
+    padding: 12px 25px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+    overflow: hidden; /* Butonların taşmasını engelle */
+}
+
+.open_close button:hover {
+    background-color: #218838;
+}
+
+.open_close button:active {
+    transform: scale(0.98);
+}
+
+.open_close .time-display {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+    display: none;
+}
+
+.open_close .time-display p {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.open_close .time-display span {
+    font-size: 20px;
+    color: #007bff;
+}
+
+.success-message {
+    font-size: 0.9em;
+    color: green;
+    margin-top: 5px;
+    display: none;
+}
+
+/* --- PROFESYONEL TAB BAR --- */
+.tab-bar {
+    height: 64px;
+}
+.tab-bar a {
+    height: 52px;
+    padding: 12px 32px;
+}
+@media (max-width: 900px) {
+    .tab-bar {
+        height: 54px;
+    }
+    .tab-bar a {
+        height: 44px;
+        padding: 10px 18px;
+    }
+}
+@media (max-width: 600px) {
+    .tab-bar {
+        height: 48px;
+    }
+    .tab-bar a {
+        height: 38px;
+        padding: 9px 12px;
+    }
+}
+
+/* --- Mobil Menü --- */
+.mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 15px;
+    width: auto;           
+    height: auto;
+    font-size: 28px;
+    background: none;
+    border: none;
+    background-color: white !important;
+    color: #45a049;
+    z-index: 2001;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 60px;
+    right: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    z-index: 2000;
+    width: 220px;
+}
+
+.mobile-menu.open {
+    display: block;
+}
+
+.mobile-menu ul {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+}
+
+.mobile-menu ul li {
+    margin-bottom: 10px;
+}
+
+.mobile-menu ul li a {
+    display: block;
+    color: inherit !important;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-menu ul li a:hover {
+    background-color: transparent !important;
+    color: inherit !important;
+}
+
+/* Mobil Header */
+.mobile-header {
+    display: none;
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    padding: 16px 16px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1002;
+}
+
+.mobile-header img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.mobile-header h1 {
+    font-size: 30px;
+    color: #333;
+    margin: 0;
+    font-weight: 600;
+}
+
+.mobile-menu .has-submenu > a::after {
+    content: " ▼";
+    font-size: 12px;
+}
+
+.mobile-menu .submenu {
+    display: none;
+    padding-left: 15px;
+}
+
+.mobile-menu .has-submenu.open .submenu {
+    display: block;
+}
+
+.mobile-menu .submenu li a {
+    padding: 8px 10px;
+    font-size: 14px;
+    display: block;
+    color: #333;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+.mobile-menu .submenu li a:hover {
+    background-color: #e0e0e0;
+}
+
+/* --- STİL İYİLEŞTİRMELERİ (styles6.css tarzında) --- */
+
+.main-content {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 30px;
+    margin-bottom: 30px;
+    margin-top: 36px;
+}
+@media (max-width: 900px) {
+    .main-content {
+        padding: 16px;
+        margin-top: 28px;
+    }
+}
+@media (max-width: 600px) {
+    .main-content {
+        padding: 8px;
+        margin-top: 20px;
+    }
+}
+
+.servis, .open_close, .set, .time-info-box {
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(33,136,56,0.08);
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.servis h2, .open_close h2, .set h2 {
+    font-size: 24px;
+    color: #218838;
+    border-bottom: 2px solid #218838;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+label {
+    font-size: 15px;
+    color: #2c3e50;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+input[type="text"], input[type="time"], textarea {
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 15px;
+    margin-bottom: 12px;
+    background: #fff;
+    transition: border 0.2s;
+}
+
+input[type="text"]:focus, input[type="time"]:focus, textarea:focus {
+    border: 1.5px solid #218838;
+    outline: none;
+}
+
+button[type="submit"], .save-button, .edit-btn, .delete-btn {
+    background: linear-gradient(135deg, #218838 0%, #28a745 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+    margin-right: 8px;
+}
+
+button[type="submit"]:hover, .save-button:hover, .edit-btn:hover, .delete-btn:hover {
+    background: #28a745;
+    box-shadow: 0 4px 16px rgba(33,136,56,0.15);
+}
+
+.service-item {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(33,136,56,0.08);
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    transition: box-shadow 0.2s;
+}
+
+.service-item:hover {
+    box-shadow: 0 6px 24px rgba(33,136,56,0.13);
+}
+
+.success-message {
+    color: #fff;
+    background: #28a745;
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-size: 14px;
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .container {
+        margin-left: 0;
+        flex-direction: column;
+        padding: 0;
+        width: 100%;
+        
+    }
+
+    .tab-bar{
+        display: none;
+    }
+
+    body {
+        overflow-x: hidden;
+    }
+
+    .sidebar {
+        display: none;
+        
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 16px;
+    }
+
+    .main-content h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .button {
+        width: 100%; /* BU Tüm butonları genişletir */
+    }
+
+    .set {
+        flex-direction: column; /* Servisleri tek sütun halinde göster */
+    }
+
+    .set .service-item {
+        flex: 1 1 100%;
+    }
+
+    #services-list {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    input[type="text"],
+    textarea {
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .mobile-header {
+        display: flex;
+        padding-top: calc(env(safe-area-inset-top, 0px) + 16px);
+
+    }
+
+button.edit-btn,
+button.delete-btn,
+form button,
+.open_close button,
+#save-time-button {
+    width: 120px !important;      /* Sabit genişlik */
+    height: 40px !important;      /* Sabit yükseklik */
+    font-size: 15px !important;   /* Tutarlı yazı boyutu */
+    margin: 15px 0 !important;     /* Üst-alt boşluk */
+    padding: 10px !important;
+    display: block !important;
+    text-align: left !important;  /* Yazıyı sola yasla */
+}
+
+@media (max-width: 768px) {
+    .main-content, .servis, .open_close, .set, .time-info-box {
+        padding: 12px;
+    }
+    .service-item {
+        padding: 12px 10px;
+    }
+}

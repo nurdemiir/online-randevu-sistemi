@@ -2,9 +2,12 @@ import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-test-key'
-DEBUG = True
-ALLOWED_HOSTS = ['*']  # Üretimde ['localhost', '127.0.0.1', 'your-domain.com'] gibi spesifik hostlar kullanın
+
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-test-key')
+
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
+ALLOWED_HOSTS = ['randevun.co', 'www.randevun.co', '127.0.0.1', 'localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -60,30 +63,21 @@ TIME_ZONE = 'Europe/Istanbul'
 USE_I18N = True
 USE_TZ = True
 
+# Statik dosyalar (CSS, JS)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Medya dosyaları için ayarlar
+# Medya dosyaları (resim, logo, vs)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# CORS ayarları
-# ... diğer ayarlar ...
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# CORS (API çağrıları için)
 CORS_ALLOW_ALL_ORIGINS = True
 
-# VEYA daha güvenli haliyle:
-# CORS_ALLOWED_ORIGINS = [
-#     "http://127.0.0.1:5500",  # Live Server adresi
-# ]
-
+# CSRF Güvenilir domainler
 CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:5500"
+    'https://randevun.co',
+    'https://www.randevun.co'
 ]
-
-
-# Üretim ortamında güvenlik için:
-# DEBUG = False
-# ALLOWED_HOSTS = ['seninsiten.com']

@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İşletme Yönetimi - Randevu Yönetimi</title>
+    <link rel="stylesheet" href="styles6.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/frontend/src/js/businessInfo.js"></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <img id="business-image" src="/frontend/src/assets/images/default-image.png" alt="İşletme Fotoğrafı">
+            <h1 id="sidebar-h1">Varsayılan İşletme</h1>
+            <h2 id="sidebar-h2">Panel</h2>
+            <nav>
+                <ul>
+                    <li><a href="/frontend/public/pages/isletme_panel/anasayfa/index6.html">Randevu Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/personel/index27.html">Personel Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/performans/index30.html" class="active">İşletme Performansı</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Ayarlar</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <button class="mobile-menu-toggle" id="menu-toggle">&#9776;</button>
+            
+            <header class="mobile-header" id="mobile-header">
+                <img id="mobile-business-image" src="/frontend/src/assets/images/default-image.png" alt="İşletme Fotoğrafı" />
+                <h1 id="mobile-business-name">İşletme Adı</h1>
+            </header>
+
+            <div class="mobile-menu" id="mobile-menu">
+                <ul>
+                    <li><a href="/frontend/public/pages/isletme_panel/anasayfa/index6.html">Randevu Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/personel/index27.html">Personel Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/performans/index30.html">İşletme Performansı</a></li>
+                    <li class="has-submenu">
+                        <a href="#">Ayarlar</a>
+                        <ul class="submenu">
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Genel Ayarlar</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/randevu_ayarlari/index9.html">Randevu Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/galeri_ayarlari/index7.html">Galeri Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/iletisim_ayarlari/index11.html">İletişim Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/sss_ayarlari/index12.html">SSS Ayarları</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        <main class="main-content">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <div class="header-content">
+                    <h1><i class="fas fa-calendar-check"></i> Randevu Yönetimi</h1>
+                    <p>İşletmenizin randevularını yönetin ve takip edin</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-refresh" onclick="loadRandevular()">
+                        <i class="fas fa-sync-alt"></i> Yenile
+                    </button>
+                    <button class="btn-refresh" onclick="refreshAllData()" style="margin-left: 10px;">
+                        <i class="fas fa-chart-line"></i> Ciro Güncelle
+                    </button>
+                </div>
+            </div>
+
+            <!-- İstatistik Kartları -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="today-appointments">0</h3>
+                        <p>Bugünkü Randevular</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-week"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="week-appointments">0</h3>
+                        <p>Bu Hafta</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="pending-appointments">0</h3>
+                        <p>Bekleyen</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="completed-appointments">0</h3>
+                        <p>Tamamlanan</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ciro İstatistikleri Bölümü -->
+            <!-- Ciro analizleri bu sayfadan kaldırıldı ve ayrı bir sayfaya taşındı. -->
+
+            <!-- Randevu Listesi -->
+            <section class="appointment-list">
+                <div class="list-header">
+                    <h2><i class="fas fa-list"></i> Randevu Listesi</h2>
+                    <div class="list-actions">
+                        <span id="appointment-count">0 randevu</span>
+                        <div class="view-toggle">
+                            <button class="view-btn active" data-view="grid">
+                                <i class="fas fa-th"></i>
+                            </button>
+                            <button class="view-btn" data-view="list">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="randevu-listesi" class="appointments-grid"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Randevu Düzenleme Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> Randevu Durumu Değiştir</h2>
+                <span class="close" onclick="closeEditModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="appointment-info">
+                    <h3 id="editAppointmentTitle">Randevu Bilgileri</h3>
+                    <p id="editAppointmentDetails">Müşteri ve randevu detayları burada gösterilecek</p>
+                </div>
+                
+                <form id="editForm">
+                    <div class="form-group">
+                        <label for="editDurum">Durum Seçin:</label>
+                        <select id="editDurum" required>
+                            <option value="bekleyen">⏳ Bekleyen</option>
+                            <option value="onaylandi">✅ Onaylandı</option>
+                            <option value="tamamlandi">🎉 Tamamlandı</option>
+                            <option value="iptal">❌ İptal Edilen</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="closeEditModal()">İptal</button>
+                        <button type="submit" class="btn-save">Durumu Güncelle</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const BASE_URL = "http://127.0.0.1:8000";
+    let allAppointments = [];
+    let revenueChart = null;
+
+    // Genel Ayarları Yükle
+    async function loadBusinessInfo() {
+        try {
+            const response = await fetch(`${BASE_URL}/api/genel-ayarlar/liste`);
+            const ayarlar = await response.json();
+            const ayar = ayarlar[0];
+
+            if (ayar) {
+                if (ayar.logo) {
+                    document.getElementById("business-image").src = ayar.logo;
+                    const mobileImage = document.getElementById("mobile-business-image");
+                    if (mobileImage) mobileImage.src = ayar.logo;
+                }
+
+
+                if (ayar.isletme_adi) {
+                    document.getElementById("sidebar-h1").textContent = ayar.isletme_adi;
+                    const mobileName = document.getElementById("mobile-business-name");
+                    if (mobileName) mobileName.textContent = ayar.isletme_adi;
+                }
+
+                if (ayar.aciklama) {
+                    const subtitle = document.getElementById("sidebar-h2");
+                    if (subtitle) subtitle.textContent = ayar.aciklama;
+                }
+            }
+        } catch (error) {
+            console.error("Genel ayarlar alınamadı:", error);
+        }
+    }
+
+    // Ciro İstatistiklerini Yükle
+    async function loadCiroIstatistikleri() {
+        try {
+            const isletmeAdi = getIsletmeAdi();
+            const response = await fetch(`${BASE_URL}/api/ciro-istatistikleri/?isletme_adi=${encodeURIComponent(isletmeAdi)}`);
+            const data = await response.json();
+
+            if (response.ok) {
+                updateCiroIstatistikleri(data);
+                createRevenueChart(data.aylik_veriler);
+            } else {
+                console.error("Ciro istatistikleri alınamadı:", data.error);
+            }
+        } catch (error) {
+            console.error("Ciro istatistikleri yüklenirken hata:", error);
+        }
+    }
+
+    // Ciro İstatistiklerini Güncelle
+    function updateCiroIstatistikleri(data) {
+        const stats = data.genel_istatistikler;
+        
+        document.getElementById('total-revenue').textContent = `₺${stats.toplam_ciro.toLocaleString('tr-TR')}`;
+        document.getElementById('total-appointments').textContent = stats.toplam_randevu;
+        document.getElementById('avg-revenue').textContent = `₺${stats.ortalama_randevu_cirosu.toLocaleString('tr-TR')}`;
+        document.getElementById('best-month-revenue').textContent = `₺${stats.en_iyi_ay_cirosu.toLocaleString('tr-TR')}`;
+        document.getElementById('best-month-name').textContent = stats.en_iyi_ay || 'En İyi Ay';
+    }
+
+    // Ciro Grafiği Oluştur
+    function createRevenueChart(monthlyData) {
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        
+        // Eğer önceki grafik varsa yok et
+        if (revenueChart) {
+            revenueChart.destroy();
+        }
+
+        const labels = monthlyData.map(item => item.ay_adi);
+        const data = monthlyData.map(item => item.ciro);
+
+        revenueChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Aylık Ciro (₺)',
+                    data: data,
+                    borderColor: '#218838',
+                    backgroundColor: 'rgba(33, 136, 56, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#218838',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            color: '#2c3e50'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        borderColor: '#218838',
+                        borderWidth: 1,
+                        cornerRadius: 8,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return `Ciro: ₺${context.parsed.y.toLocaleString('tr-TR')}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#7f8c8d',
+                            font: {
+                                size: 12
+                            },
+                            callback: function(value) {
+                                return '₺' + value.toLocaleString('tr-TR');
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#7f8c8d',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                }
+            }
+        });
+    }
+
+    // Randevuları Yükle
+    async function loadRandevular() {
+        const randevuListesiDiv = document.getElementById('randevu-listesi');
+        try {
+            const isletmeAdi = getIsletmeAdi();
+            const response = await fetch(`${BASE_URL}/api/randevular?isletme_adi=${encodeURIComponent(isletmeAdi)}`);
+            const randevular = await response.json();
+
+            allAppointments = Array.isArray(randevular) ? randevular : [];
+            allAppointments.sort((a, b) => new Date(a.tarih + 'T' + a.seans_baslangic) - new Date(b.tarih + 'T' + b.seans_baslangic));
+            
+            updateStatistics();
+            displayAppointments(allAppointments);
+            updateAppointmentCount();
+
+        } catch (error) {
+            console.error("Randevular alınamadı:", error);
+            randevuListesiDiv.innerHTML = `
+                <div class="no-appointments">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Randevular yüklenirken bir hata oluştu</h3>
+                    <p>Lütfen sayfayı yenileyin veya daha sonra tekrar deneyin.</p>
+                </div>
+            `;
+        }
+    }
+
+    // İstatistikleri Güncelle
+    function updateStatistics() {
+        const today = new Date().toISOString().split('T')[0];
+        const todayAppointments = allAppointments.filter(app => app.tarih === today);
+        const weekAppointments = allAppointments.filter(app => {
+            const appDate = new Date(app.tarih);
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            return appDate >= weekAgo;
+        });
+        const pendingAppointments = allAppointments.filter(app => app.durum === 'bekleyen');
+        const completedAppointments = allAppointments.filter(app => app.durum === 'tamamlandi');
+
+        document.getElementById('today-appointments').textContent = todayAppointments.length;
+        document.getElementById('week-appointments').textContent = weekAppointments.length;
+        document.getElementById('pending-appointments').textContent = pendingAppointments.length;
+        document.getElementById('completed-appointments').textContent = completedAppointments.length;
+    }
+
+    // Randevuları Görüntüle
+    function displayAppointments(appointments) {
+        const randevuListesiDiv = document.getElementById('randevu-listesi');
+        
+        if (!appointments || appointments.length === 0) {
+            randevuListesiDiv.innerHTML = `
+                <div class="no-appointments">
+                    <i class="fas fa-calendar-times"></i>
+                    <h3>Henüz randevu bulunmamaktadır</h3>
+                    <p>Müşterilerinizden randevu aldığınızda burada görünecektir.</p>
+                </div>
+            `;
+            return;
+        }
+
+        randevuListesiDiv.innerHTML = '';
+
+        appointments.forEach((item, index) => {
+            const card = createAppointmentCard(item, index);
+            randevuListesiDiv.appendChild(card);
+        });
+    }
+
+    // Randevu Kartı Oluştur
+    function createAppointmentCard(item, index) {
+        const card = document.createElement("div");
+        card.classList.add("appointment-card");
+        
+        const status = getAppointmentStatus(item);
+        const timeRange = `${item.seans_baslangic} - ${item.seans_bitis}`;
+        const customerName = `${item.ad} ${item.soyad}`;
+        
+        card.innerHTML = `
+            <div class="card-header">
+                <div class="appointment-id">#${index + 1}</div>
+                <div class="status-badge ${status.class}">
+                    <i class="${status.icon}"></i>
+                    ${status.text}
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="customer-info">
+                    <div class="customer-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="customer-details">
+                        <h3>${customerName}</h3>
+                        <p><i class="fas fa-phone"></i> ${item.telefon}</p>
+                        <p><i class="fas fa-envelope"></i> ${item.email}</p>
+                    </div>
+                </div>
+                
+                <div class="appointment-details">
+                    <div class="detail-item">
+                        <i class="fas fa-cut"></i>
+                        <span><strong>Hizmet:</strong> ${item.hizmet_adi}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-user-tie"></i>
+                        <span><strong>Personel:</strong> ${item.personel_adi}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-calendar"></i>
+                        <span><strong>Tarih:</strong> ${formatDate(item.tarih)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-clock"></i>
+                        <span><strong>Saat:</strong> ${timeRange}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-hourglass-half"></i>
+                        <span><strong>Süre:</strong> ${item.hizmet_suresi} dakika</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-money-bill"></i>
+                        <span><strong>Fiyat:</strong> ₺${item.fiyat}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-actions">
+                ${item.durum === 'bekleyen' ? `
+                    <button class="btn-action btn-confirm" onclick="confirmAppointment(${index})" title="Onayla">
+                        <i class="fas fa-check"></i>
+                    </button>
+                ` : ''}
+                ${item.durum === 'onaylandi' ? `
+                    <button class="btn-action btn-complete" onclick="completeAppointment(${index})" title="Tamamla">
+                        <i class="fas fa-check-double"></i>
+                    </button>
+                ` : ''}
+                <button class="btn-action btn-edit" onclick="editAppointment(${index})" title="Durumu Değiştir">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn-action btn-call" onclick="callCustomer('${item.telefon}')" title="Ara">
+                    <i class="fas fa-phone"></i>
+                </button>
+                ${item.durum !== 'tamamlandi' && item.durum !== 'iptal' ? `
+                    <button class="btn-action btn-cancel" onclick="cancelAppointment(${index})" title="İptal Et">
+                        <i class="fas fa-times"></i>
+                    </button>
+                ` : ''}
+            </div>
+        `;
+        
+        return card;
+    }
+
+    // Randevu Durumu Belirle
+    function getAppointmentStatus(item) {
+        const today = new Date().toISOString().split('T')[0];
+        const appointmentDate = new Date(item.tarih);
+        const now = new Date();
+        
+        // Veritabanından gelen durumu kullan
+        switch(item.durum) {
+            case 'tamamlandi':
+                return { text: 'Tamamlandı', class: 'completed', icon: 'fas fa-check-circle' };
+            case 'onaylandi':
+                return { text: 'Onaylandı', class: 'confirmed', icon: 'fas fa-check' };
+            case 'iptal':
+                return { text: 'İptal Edildi', class: 'cancelled', icon: 'fas fa-times-circle' };
+            case 'bekleyen':
+            default:
+                if (item.tarih === today) {
+                    return { text: 'Bugün', class: 'today', icon: 'fas fa-calendar-day' };
+                } else if (item.tarih < today) {
+                    return { text: 'Geçmiş', class: 'past', icon: 'fas fa-history' };
+                } else {
+                    return { text: 'Bekliyor', class: 'pending', icon: 'fas fa-clock' };
+                }
+        }
+    }
+
+    // Tarih Formatla
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('tr-TR', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+
+    // Randevu Sayısını Güncelle
+    function updateAppointmentCount() {
+        const count = allAppointments.length;
+        document.getElementById('appointment-count').textContent = `${count} randevu`;
+    }
+
+    // Aksiyon Fonksiyonları
+    async function confirmAppointment(index) {
+        const appointment = allAppointments[index];
+        if (confirm(`${appointment.ad} ${appointment.soyad} adlı müşterinin randevusunu onaylamak istediğinizden emin misiniz?`)) {
+            try {
+                const response = await fetch(`${BASE_URL}/api/randevu/${appointment.id}/onayla/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                if (response.ok) {
+                    appointment.durum = 'onaylandi';
+                    updateStatistics();
+                    displayAppointments(allAppointments);
+                    alert('Randevu başarıyla onaylandı!');
+                } else {
+                    const errorData = await response.json();
+                    alert('Hata: ' + (errorData.error || 'Randevu onaylanamadı'));
+                }
+            } catch (error) {
+                alert('Sunucuya bağlanılamadı: ' + error.message);
+            }
+        }
+    }
+
+    async function completeAppointment(index) {
+    const appointment = allAppointments[index];
+
+    // Eğer randevu geçersizse veya zaten tamamlandıysa çık
+    if (!appointment || appointment.durum === "tamamlandi") return;
+
+    try {
+        // ✅ Backend'e PUT isteği göndererek durumu güncelle
+        const response = await fetch(`${BASE_URL}/api/randevu-guncelle/${appointment.id}/`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ durum: "tamamlandi" }),
+        });
+
+        if (!response.ok) {
+        throw new Error("Durum güncellemesi başarısız oldu.");
+        }
+
+        // ✅ Frontend verisini güncelle
+        appointment.durum = "tamamlandi";
+
+        // ✅ Görsel istatistikleri ve randevu listesini güncelle
+        updateStatistics();
+        displayAppointments(allAppointments);
+
+        // ✅ Ciro verilerini ve grafiği güncelle
+        await loadCiroIstatistikleri();
+
+        console.log("Randevu başarıyla tamamlandı ve ciro güncellendi.");
+    } catch (error) {
+        console.error("Tamamlama sırasında hata oluştu:", error);
+        alert("Randevu tamamlanamadı. Lütfen tekrar deneyin.");
+    }
+    }
+
+
+
+    function editAppointment(index) {
+        const appointment = allAppointments[index];
+        
+        // Modal'ı aç ve form alanlarını doldur
+        document.getElementById('editAppointmentTitle').textContent = `Randevu Durumu Değiştir: ${appointment.ad} ${appointment.soyad}`;
+        document.getElementById('editAppointmentDetails').textContent = `Tarih: ${formatDate(appointment.tarih)}, Saat: ${appointment.seans_baslangic} - ${appointment.seans_bitis}, Hizmet: ${appointment.hizmet_adi}, Personel: ${appointment.personel_adi}`;
+        document.getElementById('editDurum').value = appointment.durum || 'bekleyen';
+
+        // Modal'ı göster
+        document.getElementById('editModal').style.display = 'block';
+        
+        // Global değişken olarak düzenlenen randevunun index'ini sakla
+        window.editingAppointmentIndex = index;
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').style.display = 'none';
+        document.getElementById('editForm').reset();
+        window.editingAppointmentIndex = undefined;
+    }
+
+    function callCustomer(phone) {
+        window.open(`tel:${phone}`, '_self');
+    }
+
+    async function cancelAppointment(index) {
+        const appointment = allAppointments[index];
+        if (confirm(`${appointment.ad} ${appointment.soyad} adlı müşterinin randevusunu iptal etmek istediğinizden emin misiniz?`)) {
+            try {
+                const response = await fetch(`${BASE_URL}/api/randevu/${appointment.id}/iptal-et/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                if (response.ok) {
+                    appointment.durum = 'iptal';
+                    updateStatistics();
+                    displayAppointments(allAppointments);
+                    
+                    // Ciro istatistiklerini güncelle (iptal edilen randevu ciroya dahil değil)
+                    await loadCiroIstatistikleri();
+                    
+                    alert('Randevu başarıyla iptal edildi!');
+                } else {
+                    const errorData = await response.json();
+                    alert('Hata: ' + (errorData.error || 'Randevu iptal edilemedi'));
+                }
+            } catch (error) {
+                alert('Sunucuya bağlanılamadı: ' + error.message);
+            }
+        }
+    }
+
+    // Görünüm Değiştirme
+    function setupViewToggle() {
+        const viewButtons = document.querySelectorAll('.view-btn');
+        const appointmentsContainer = document.getElementById('randevu-listesi');
+
+        viewButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                viewButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const view = btn.dataset.view;
+                if (view === 'list') {
+                    appointmentsContainer.classList.add('list-view');
+                } else {
+                    appointmentsContainer.classList.remove('list-view');
+                }
+            });
+        });
+    }
+
+    // Sayfa Yüklendiğinde
+    document.addEventListener('DOMContentLoaded', async function () {
+        await loadBusinessInfo();
+        await loadRandevular();
+        await loadCiroIstatistikleri();
+        setupViewToggle();
+    });
+
+    // Menü açma/kapatma işlemi
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+        document.getElementById("mobile-menu").classList.toggle("open");
+    });
+
+    document.querySelectorAll('.mobile-menu .has-submenu > a').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const parent = this.parentElement;
+            parent.classList.toggle('open');
+        });
+    });
+
+    // Randevu Düzenleme Modal Form Gönderimi
+    document.getElementById('editForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        
+        if (typeof window.editingAppointmentIndex === 'undefined') {
+            alert('Düzenlenecek randevu bulunamadı.');
+            return;
+        }
+
+        const appointment = allAppointments[window.editingAppointmentIndex];
+        const oldStatus = appointment.durum;
+        const newStatus = document.getElementById('editDurum').value;
+        const formData = {
+            durum: newStatus,
+        };
+
+        try {
+            const response = await fetch(`${BASE_URL}/api/randevu/${appointment.id}/durum-degistir/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                // Randevu listesini güncelle
+                Object.assign(allAppointments[window.editingAppointmentIndex], formData);
+                
+                updateStatistics();
+                displayAppointments(allAppointments);
+                
+                // Eğer durum tamamlandı'ya değiştiyse veya tamamlandı'dan başka bir duruma değiştiyse ciro istatistiklerini güncelle
+                if (oldStatus !== newStatus && (oldStatus === 'tamamlandi' || newStatus === 'tamamlandi')) {
+                    await loadCiroIstatistikleri();
+                    alert('Randevu durumu başarıyla güncellendi! Ciro istatistikleri güncellendi.');
+                } else {
+                    alert('Randevu durumu başarıyla güncellendi!');
+                }
+                
+                closeEditModal();
+            } else {
+                const errorData = await response.json();
+                alert('Hata: ' + (errorData.error || 'Randevu durumu güncellenemedi'));
+            }
+        } catch (error) {
+            alert('Sunucuya bağlanılamadı: ' + error.message);
+        }
+    });
+
+    // Tüm verileri yenile
+    async function refreshAllData() {
+        try {
+            await Promise.all([
+                loadRandevular(),
+                loadCiroIstatistikleri()
+            ]);
+            alert('Tüm veriler başarıyla güncellendi!');
+        } catch (error) {
+            console.error('Veriler güncellenirken hata:', error);
+            alert('Veriler güncellenirken bir hata oluştu.');
+        }
+    }
+
+    // Yardımcı fonksiyon: işletme adını localStorage'dan alma
+    function getIsletmeAdi() {
+        return localStorage.getItem("isletmeAdi") || "";
+    }
+</script>
+
+</body>
+</html>

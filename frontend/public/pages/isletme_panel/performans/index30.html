@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İşletme Performansı - Ciro Analizi</title>
+    <link rel="stylesheet" href="styles30.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <img id="business-image" src="/frontend/src/assets/images/default-image.png" alt="İşletme Fotoğrafı">
+            <h1 id="sidebar-h1">Varsayılan İşletme</h1>
+            <h2 id="sidebar-h2">Panel</h2>
+            <nav>
+                <ul>
+                    <li><a href="/frontend/public/pages/isletme_panel/anasayfa/index6.html">Randevu Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/personel/index27.html">Personel Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/performans/index30.html" class="active">İşletme Performansı</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Ayarlar</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <button class="mobile-menu-toggle" id="menu-toggle">&#9776;</button>
+        <header class="mobile-header" id="mobile-header">
+            <img id="mobile-business-image" src="/frontend/src/assets/images/default-image.png" alt="İşletme Fotoğrafı" />
+            <h1 id="mobile-business-name">İşletme Adı</h1>
+        </header>
+        <div class="mobile-menu" id="mobile-menu">
+            <ul>
+                <li><a href="/frontend/public/pages/isletme_panel/anasayfa/index6.html">Randevu Yönetimi</a></li>
+                <li><a href="/frontend/public/pages/isletme_panel/personel/index27.html">Personel Yönetimi</a></li>
+                <li><a href="/frontend/public/pages/isletme_panel/performans/index30.html">İşletme Performansı</a></li>
+                <li class="has-submenu">
+                    <a href="#">Ayarlar</a>
+                    <ul class="submenu">
+                        <li><a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Genel Ayarlar</a></li>
+                        <li><a href="/frontend/public/pages/isletme_panel/ayarlar/randevu_ayarlari/index9.html">Randevu Ayarları</a></li>
+                        <li><a href="/frontend/public/pages/isletme_panel/ayarlar/galeri_ayarlari/index7.html">Galeri Ayarları</a></li>
+                        <li><a href="/frontend/public/pages/isletme_panel/ayarlar/iletisim_ayarlari/index11.html">İletişim Ayarları</a></li>
+                        <li><a href="/frontend/public/pages/isletme_panel/ayarlar/sss_ayarlari/index12.html">SSS Ayarları</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <main class="main-content">
+            <div class="dashboard-header">
+                <div class="header-content">
+                    <h1><i class="fas fa-chart-line"></i> İşletme Performansı</h1>
+                    <p>Son 6 ayın ciro performansını ve analizini görüntüleyin</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-refresh" onclick="loadCiroIstatistikleri()">
+                        <i class="fas fa-sync-alt"></i> Yenile
+                    </button>
+                </div>
+            </div>
+            <section class="revenue-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> Ciro İstatistikleri</h2>
+                    <p>Son 6 ayın ciro performansını takip edin</p>
+                </div>
+                <div class="revenue-stats-grid">
+                    <div class="revenue-stat-card">
+                        <div class="revenue-stat-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="revenue-stat-content">
+                            <h3 id="total-revenue">₺0</h3>
+                            <span class="revenue-period">(6 Ay)</span>
+                            <p>Toplam Ciro</p>
+                        </div>
+                    </div>
+                    <div class="revenue-stat-card">
+                        <div class="revenue-stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="revenue-stat-content">
+                            <h3 id="total-appointments">0</h3>
+                            <p>Toplam Randevu</p>
+                        </div>
+                    </div>
+                    <div class="revenue-stat-card">
+                        <div class="revenue-stat-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="revenue-stat-content">
+                            <h3 id="avg-revenue">₺0</h3>
+                            <p>Ortalama Randevu Cirosu</p>
+                        </div>
+                    </div>
+                    <div class="revenue-stat-card">
+                        <div class="revenue-stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="revenue-stat-content">
+                            <h3 id="best-month-revenue">₺0</h3>
+                            <p id="best-month-name">En İyi Ay</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="revenue-chart-container">
+                    <div class="chart-header">
+                        <h3>Aylık Ciro Grafiği</h3>
+                        <div class="chart-actions">
+                            <button class="btn-refresh" onclick="loadCiroIstatistikleri()">
+                                <i class="fas fa-sync-alt"></i> Yenile
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+<script>
+    const BASE_URL = "http://127.0.0.1:8000";
+    let revenueChart = null;
+    // Genel Ayarları Yükle (sidebar için)
+    async function loadBusinessInfo() {
+        try {
+            const response = await fetch(`${BASE_URL}/api/genel-ayarlar/liste`);
+            const ayarlar = await response.json();
+            const ayar = ayarlar[0];
+            if (ayar) {
+                if (ayar.logo) {
+                    document.getElementById("business-image").src = ayar.logo;
+                    const mobileImage = document.getElementById("mobile-business-image");
+                    if (mobileImage) mobileImage.src = ayar.logo;
+                }
+                if (ayar.isletme_adi) {
+                    document.getElementById("sidebar-h1").textContent = ayar.isletme_adi;
+                    const mobileName = document.getElementById("mobile-business-name");
+                    if (mobileName) mobileName.textContent = ayar.isletme_adi;
+                }
+                if (ayar.aciklama) {
+                    const subtitle = document.getElementById("sidebar-h2");
+                    if (subtitle) subtitle.textContent = ayar.aciklama;
+                }
+            }
+        } catch (error) {
+            console.error("Genel ayarlar alınamadı:", error);
+        }
+    }
+    // Mobil menü ve başlık için işletme adı ve logo yüklemesi
+    async function loadCiroIstatistikleri() {
+        try {
+            const isletmeAdi = getIsletmeAdi();
+            const response = await fetch(`${BASE_URL}/api/ciro-istatistikleri/?isletme_adi=${encodeURIComponent(isletmeAdi)}`);
+            const data = await response.json();
+            if (response.ok) {
+                updateCiroIstatistikleri(data);
+                createRevenueChart(data.aylik_veriler);
+            } else {
+                console.error("Ciro istatistikleri alınamadı:", data.error);
+            }
+        } catch (error) {
+            console.error("Ciro istatistikleri yüklenirken hata:", error);
+        }
+    }
+    function updateCiroIstatistikleri(data) {
+        const stats = data.genel_istatistikler;
+        document.getElementById('total-revenue').textContent = `₺${stats.toplam_ciro.toLocaleString('tr-TR')}`;
+        document.getElementById('total-appointments').textContent = stats.toplam_randevu;
+        document.getElementById('avg-revenue').textContent = `₺${stats.ortalama_randevu_cirosu.toLocaleString('tr-TR')}`;
+        document.getElementById('best-month-revenue').textContent = `₺${stats.en_iyi_ay_cirosu.toLocaleString('tr-TR')}`;
+        document.getElementById('best-month-name').textContent = stats.en_iyi_ay || 'En İyi Ay';
+    }
+    function createRevenueChart(monthlyData) {
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        if (revenueChart) {
+            revenueChart.destroy();
+        }
+        const labels = monthlyData.map(item => item.ay_adi);
+        const data = monthlyData.map(item => item.ciro);
+        revenueChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Aylık Ciro (₺)',
+                    data: data,
+                    borderColor: '#218838',
+                    backgroundColor: 'rgba(33, 136, 56, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#218838',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            color: '#2c3e50'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        borderColor: '#218838',
+                        borderWidth: 1,
+                        cornerRadius: 8,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return `Ciro: ₺${context.parsed.y.toLocaleString('tr-TR')}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#7f8c8d',
+                            font: {
+                                size: 12
+                            },
+                            callback: function(value) {
+                                return '₺' + value.toLocaleString('tr-TR');
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#7f8c8d',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                }
+            }
+        });
+    }
+    function getIsletmeAdi() {
+        return localStorage.getItem("isletmeAdi") || "";
+    }
+    document.addEventListener('DOMContentLoaded', async function () {
+        await loadBusinessInfo();
+        await loadCiroIstatistikleri();
+        // Mobil menü açma/kapatma
+        const menuToggle = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener("click", function () {
+                mobileMenu.classList.toggle("open");
+            });
+        }
+        // Mobil menüde Ayarlar alt menüsünü açma
+        document.querySelectorAll('.mobile-menu .has-submenu > a').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const parent = this.parentElement;
+                parent.classList.toggle('open');
+            });
+        });
+    });
+</script>
+</body>
+</html> 

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İşletme Yönetimi - Randevu Al</title>
+    <link rel="stylesheet" href="styles1.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <img id="business-image" src="/frontend/src/assets/images/default-image.png" alt="İşletme Fotoğrafı">
+            <h1 id="sidebar-h1">Varsayılan İşletme</h1>
+            <h2 id="sidebar-h2">Panel</h2>
+            <nav>
+                <ul>
+                    <li><a href="/frontend/public/pages/musteri_panel/randevu_al/index1.html">Randevu Al</a></li>
+                    <li><a href="/frontend/public/pages/musteri_panel/galeri/index15.html">Galeri</a></li>
+                    <li><a href="/frontend/public/pages/musteri_panel/sss/index3.html">Sıkça Sorulan Sorular</a></li>
+                    <li><a href="/frontend/public/pages/musteri_panel/iletisim/index2.html">İletişim</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <button class="mobile-menu-toggle" id="menu-toggle">&#9776;</button>
+        
+        <header class="mobile-header" id="mobile-header">
+            <img id="mobile-business-image" src="/frontend/src/assets/images/default-image.png" alt="İşletme Fotoğrafı">
+            <h1 id="mobile-business-name">İşletme Adı</h1>
+        </header>
+
+        <div class="mobile-menu" id="mobile-menu">
+            <ul>
+                <li><a href="/frontend/public/pages/musteri_panel/randevu_al/index1.html">Randevu Al</a></li>
+                <li><a href="/frontend/public/pages/musteri_panel/galeri/index15.html">Galeri</a></li>
+                <li><a href="/frontend/public/pages/musteri_panel/sss/index3.html">Sıkça Sorulan Sorular</a></li>
+                <li><a href="/frontend/public/pages/musteri_panel/iletisim/index2.html">İletişim</a></li>
+            </ul>
+        </div>
+
+
+        <main class="main-content">
+            <h2>Randevu Al</h2>
+            <div class="service-cards" id="service-cards"></div>
+        </main>
+    </div>
+
+    <script>
+        const BASE_URL = "http://127.0.0.1:8000";
+        const serviceCardsContainer = document.getElementById('service-cards');
+
+        async function loadBusinessInfo() {
+            const BASE_URL = "http://localhost:8000"; // Gerekirse global olarak yukarı taşı
+            try {
+                const response = await fetch(`${BASE_URL}/api/genel-ayarlar/liste`);
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+                const ayarlar = await response.json();
+                const ayar = ayarlar[0];
+
+                if (ayar) {
+                    // Logo
+                    if (ayar.logo) {
+                        document.getElementById("business-image").src = ayar.logo;
+                        const mobileImage = document.getElementById("mobile-business-image");
+                        if (mobileImage) mobileImage.src = ayar.logo;
+                    }
+
+                    // Başlık (işletme adı)
+                    if (ayar.isletme_adi) {
+                        const sidebarH1 = document.getElementById("sidebar-h1");
+                        const mobileName = document.getElementById("mobile-business-name");
+                        if (sidebarH1) sidebarH1.textContent = ayar.isletme_adi;
+                        if (mobileName) mobileName.textContent = ayar.isletme_adi;
+                    }
+
+                    // Alt başlık (açıklama)
+                    if (ayar.aciklama) {
+                        const subtitle = document.getElementById("sidebar-h2");
+                        if (subtitle) subtitle.textContent = ayar.aciklama;
+                    }
+                }
+            } catch (error) {
+                console.error("Genel ayarlar yüklenemedi:", error);
+                const fallbackTitle = document.getElementById("sidebar-h1");
+                if (fallbackTitle) fallbackTitle.textContent = "İşletme Adı";
+            }
+        }
+
+// Sayfa yüklendiğinde çağır
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadBusinessInfo();
+});
+
+
+        async function displayServices() {
+            try {
+                const response = await fetch(`${BASE_URL}/api/hizmetler/`);
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                const services = await response.json();
+                serviceCardsContainer.innerHTML = '';
+
+                services.forEach(service => {
+                    const foto = service.hizmet_fotografi
+                        ? `${BASE_URL}${service.hizmet_fotografi}`
+                        : "/frontend/public/img/default-service.jpg";
+
+                    const card = document.createElement('div');
+                    card.classList.add('card');
+                    card.innerHTML = `
+                        <div class="card-content">
+                            <h4>${service.hizmet_adi}</h4>
+                            <div class="card-image">
+                                <img src="${foto}" alt="${service.hizmet_adi}">
+                            </div>
+                            <p>${service.aciklama}</p>
+                            <p>Seans Süresi: <strong>${service.seans_suresi} dk</strong></p>
+                            <p>Fiyat: <strong>${service.fiyat} ₺</strong></p>
+                            <a href="/frontend/public/pages/odeme/hizmet_detaylari/index20.html?hizmet_id=${service.id}">
+                                <button class="card-button">Randevu Al</button>
+                            </a>
+                        </div>
+                    `;
+                    serviceCardsContainer.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Hizmetler alınamadı:", error);
+                serviceCardsContainer.innerHTML = "<p>Hizmetler yüklenirken hata oluştu.</p>";
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            await Promise.all([loadBusinessInfo(), displayServices()]);
+        });
+
+        // Mobil menü aç/kapat
+        const menuToggle = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener("click", () => {
+                mobileMenu.classList.toggle("open");
+            });
+        }
+
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Randevu Onayı - Randevunu Bul</title>
+    <link rel="stylesheet" href="styles24.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Adım Göstergesi -->
+        <div class="steps-indicator">
+            <div class="step">
+                <div class="step-number">1</div>
+                <span>Hizmet Seçimi</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <span>Tarih & Saat</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <span>Bilgiler</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step active">
+                <div class="step-number">4</div>
+                <span>Onay</span>
+            </div>
+        </div>
+
+        <!-- Ana İçerik -->
+        <div class="form-card">
+            <h2>Randevu Onayı</h2>
+            
+            <!-- Hizmet Bilgileri -->
+            <div class="preview-section">
+                <h3>
+                    <i class="fas fa-cut"></i>
+                    Hizmet Detayları
+                </h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Hizmet</span>
+                        <span class="info-value" id="serviceName">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Personel</span>
+                        <span class="info-value" id="staffName">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Süre</span>
+                        <span class="info-value" id="duration">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Fiyat</span>
+                        <span class="info-value" id="price">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarih ve Saat -->
+            <div class="preview-section">
+                <h3>
+                    <i class="fas fa-calendar-alt"></i>
+                    Randevu Zamanı
+                </h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Tarih</span>
+                        <span class="info-value" id="appointmentDate">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Saat</span>
+                        <span class="info-value" id="appointmentTime">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Müşteri Bilgileri -->
+            <div class="preview-section">
+                <h3>
+                    <i class="fas fa-user"></i>
+                    Müşteri Bilgileri
+                </h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Ad Soyad</span>
+                        <span class="info-value" id="customerName">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Telefon</span>
+                        <span class="info-value" id="customerPhone">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">E-posta</span>
+                        <span class="info-value" id="customerEmail">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Bildirimler</span>
+                        <span class="info-value" id="notifications">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fiyat Özeti -->
+            <div class="preview-section">
+                <h3>
+                    <i class="fas fa-receipt"></i>
+                    Fiyat Özeti
+                </h3>
+                <div class="price-summary">
+                    <div class="price-row">
+                        <span class="price-label">Hizmet Tutarı</span>
+                        <span class="price-value" id="servicePrice">-</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-label">KDV (%18)</span>
+                        <span class="price-value" id="taxAmount">-</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-label">Toplam Tutar</span>
+                        <span class="price-value total-price" id="totalPrice">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onay Kutusu -->
+            <div class="confirmation-box">
+                <div class="confirmation-text">
+                    Randevu bilgilerinizi kontrol ediniz. Onayladıktan sonra randevunuz oluşturulacak ve 
+                    seçtiğiniz iletişim kanalları üzerinden bilgilendirileceksiniz.
+                </div>
+                <div class="confirmation-checkbox">
+                    <input type="checkbox" id="confirmAppointment" required>
+                    <label for="confirmAppointment">
+                        Randevu bilgilerimin doğruluğunu onaylıyorum ve randevumu oluşturmak istiyorum.
+                    </label>
+                </div>
+            </div>
+
+            <!-- Butonlar -->
+            <div class="action-buttons">
+                <button class="btn-edit" onclick="window.location.href='../musteri_bilgileri/index23.html'">Bilgileri Düzenle</button>
+                <button class="btn-confirm" id="submitButton" disabled>Randevuyu Onayla</button>
+            </div>
+        </div>
+    </div>
+
+  <script>
+    // Genel ayarlardan işletme adı veritabanından çekilir
+    async function getIsletmeAdiFromDB() {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/genel-ayarlar/liste");
+            const data = await response.json();
+            if (Array.isArray(data) && data.length > 0) {
+                return data[0].isletme_adi;
+            }
+        } catch (err) {
+            console.error("İşletme adı alınamadı:", err);
+        }
+        return "Varsayılan";
+    }
+
+    document.addEventListener('DOMContentLoaded', async function () {
+        const randevuId = new URLSearchParams(window.location.search).get("randevu_id");
+        let randevuData = null;
+
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/randevu/${randevuId}/`);
+            const data = await response.json();
+            if (response.ok) {
+                randevuData = data;
+
+                document.getElementById('serviceName').textContent = data.hizmet_adi || '-';
+                document.getElementById('duration').textContent = (data.hizmet_suresi ? data.hizmet_suresi + ' dakika' : '-');
+                document.getElementById('staffName').textContent = data.personel_adi || '-';
+                document.getElementById('appointmentDate').textContent = data.tarih ? formatDate(data.tarih) : '-';
+                document.getElementById('appointmentTime').textContent = (data.seans_baslangic && data.seans_bitis) ? (data.seans_baslangic + ' - ' + data.seans_bitis) : '-';
+                document.getElementById('customerName').textContent = (data.ad && data.soyad) ? (data.ad + ' ' + data.soyad) : '-';
+                document.getElementById('customerPhone').textContent = data.telefon || '-';
+                document.getElementById('customerEmail').textContent = data.email || '-';
+
+                const notifications = [];
+                if (data.sms) notifications.push('SMS');
+                if (data.email_bilgilendirme) notifications.push('E-posta');
+                if (data.whatsapp) notifications.push('WhatsApp');
+                document.getElementById('notifications').textContent = notifications.length > 0 ? notifications.join(', ') : 'Bildirim tercihi yok';
+
+                document.getElementById('price').textContent = (data.hizmet_fiyat ? data.hizmet_fiyat + ' ₺' : '-');
+
+                if (data.hizmet_fiyat) {
+                    const servicePrice = parseFloat(data.hizmet_fiyat);
+                    const taxRate = 0.18;
+                    const taxAmount = servicePrice * taxRate;
+                    const totalPrice = servicePrice + taxAmount;
+                    document.getElementById('servicePrice').textContent = servicePrice.toFixed(2) + ' ₺';
+                    document.getElementById('taxAmount').textContent = taxAmount.toFixed(2) + ' ₺';
+                    document.getElementById('totalPrice').textContent = totalPrice.toFixed(2) + ' ₺';
+                }
+            } else {
+                alert('Randevu bilgisi bulunamadı!');
+            }
+        } catch (err) {
+            alert('Sunucudan bilgi alınamadı: ' + err.message);
+        }
+
+        const confirmCheckbox = document.getElementById('confirmAppointment');
+        const submitButton = document.getElementById('submitButton');
+
+        confirmCheckbox.addEventListener('change', function () {
+            submitButton.disabled = !this.checked;
+        });
+
+        submitButton.addEventListener('click', async function () {
+            if (!confirmCheckbox.checked || !randevuData) return;
+
+            const isletme = await getIsletmeAdiFromDB();
+
+            const payload = {
+                ad: randevuData.ad,
+                soyad: randevuData.soyad,
+                telefon: randevuData.telefon,
+                email: randevuData.email,
+                tarih: randevuData.tarih,
+                seans_baslangic: randevuData.seans_baslangic,
+                seans_bitis: randevuData.seans_bitis,
+                hizmet_id: randevuData.hizmet_id,
+                personel_adi: randevuData.personel_adi,
+                isletme: isletme,
+                sms: randevuData.sms,
+                email_bilgilendirme: randevuData.email_bilgilendirme,
+                whatsapp: randevuData.whatsapp,
+                kvkk: randevuData.kvkk
+            };
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/api/randevu-al/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert("Randevunuz başarıyla oluşturuldu! Bilgilendirme mesajları gönderilecektir.");
+                    window.location.href = "/";
+                } else {
+                    alert("Hata: " + result.error);
+                }
+            } catch (error) {
+                alert("Sunucuya bağlanılamadı: " + error.message);
+            }
+        });
+    });
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            weekday: 'long'
+        };
+        return date.toLocaleDateString('tr-TR', options);
+    }
+</script>
+</body>
+</html>

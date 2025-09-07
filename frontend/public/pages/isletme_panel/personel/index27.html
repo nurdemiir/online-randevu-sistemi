@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İşletme Yönetimi - Personel Yönetimi</title>
+    <link rel="stylesheet" href="styles27.css">
+    <script src="/frontend/src/js/businessInfo.js"></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <img id="business-image" src="/frontend/src/assets/images/default-image.png" alt="İşletme Fotoğrafı">
+            <h1 id="sidebar-h1">Varsayılan İşletme</h1>
+            <h2 id="sidebar-h2">Panel</h2>
+            <nav>
+                <ul>
+                    <li><a href="/frontend/public/pages/isletme_panel/anasayfa/index6.html">Randevu Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/personel/index27.html">Personel Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/performans/index30.html" class="active">İşletme Performansı</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Ayarlar</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <button class="mobile-menu-toggle" id="menu-toggle">&#9776;</button>
+            
+            <header class="mobile-header" id="mobile-header">
+                <img id="mobile-business-image" src="/frontend/src/assets/images/default-image.png" alt="İşletme Fotoğrafı" />
+                <h1 id="mobile-business-name">İşletme Adı</h1>
+            </header>
+
+            <div class="mobile-menu" id="mobile-menu">
+                <ul>
+                    <li><a href="/frontend/public/pages/isletme_panel/anasayfa/index6.html">Randevu Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/personel/index27.html">Personel Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/performans/index30.html">İşletme Performansı</a></li>
+                    <li class="has-submenu">
+                        <a href="#">Ayarlar</a>
+                        <ul class="submenu">
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Genel Ayarlar</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/randevu_ayarlari/index9.html">Randevu Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/galeri_ayarlari/index7.html">Galeri Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/iletisim_ayarlari/index11.html">İletişim Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/sss_ayarlari/index12.html">SSS Ayarları</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        <main class="main-content">
+            <section id="add-employee-section">
+                <h2>Personel Ekle</h2>
+                <form id="employee-form">
+                    <label for="employee-name">Personel Adı:</label>
+                    <input type="text" id="employee-name" placeholder="Personel adı girin" required>
+                    
+                    <label class="services-label">Personelin Yapabildiği Hizmetler:</label>
+                    <div id="services-checkbox-list"></div>
+                    
+                    <button type="submit">Kaydet</button>
+                    <p id="success-message" class="success-message"></p>
+                </form>
+            </section>
+            <section id="employee-list-section">
+                <h2>Kayıtlı Personeller</h2>
+                <ul id="employee-list"></ul>
+            </section>
+        </main>
+    </div>
+
+<script>
+    const servicesCheckboxList = document.getElementById('services-checkbox-list');
+    const employeeForm = document.getElementById('employee-form');
+    const employeeList = document.getElementById('employee-list');
+    const employeeNameInput = document.getElementById('employee-name');
+    const successMessage = document.getElementById('success-message');
+    successMessage.style.display = 'none';
+
+    let editingEmployeeId = null;
+
+    async function getServicesFromBackend() {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/hizmet-listesi");
+            const data = await response.json();
+            return data.map(service => service.hizmet_adi);
+        } catch (error) {
+            console.error("Hizmetler alınamadı:", error);
+            return [];
+        }
+    }
+
+    async function createServiceCheckboxes() {
+        const services = await getServicesFromBackend();
+        servicesCheckboxList.innerHTML = '';
+
+        services.forEach(serviceName => {
+            const container = document.createElement('div');
+            container.classList.add('checkbox-row');
+
+            const label = document.createElement('label');
+            label.textContent = serviceName;
+            label.classList.add('checkbox-label');
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.value = serviceName;
+
+            container.appendChild(label);
+            container.appendChild(checkbox);
+            servicesCheckboxList.appendChild(container);
+        });
+    }
+
+    window.addEventListener("DOMContentLoaded", async () => {
+        try {
+            const response = await fetch("http://localhost:8000/api/genel-ayarlar/liste");
+            const ayarlar = await response.json();
+            const ayar = ayarlar[0];
+
+            if (ayar) {
+                // Ana başlık ve alt başlığı tüm sayfalarda güncelle
+                if (ayar.logo) {
+                    document.getElementById("business-image").src = ayar.logo;
+                    const mobileImage = document.getElementById("mobile-business-image");
+                    if (mobileImage) mobileImage.src = ayar.logo;
+                }
+
+                if (ayar.isletme_adi) {
+                    document.getElementById("sidebar-h1").textContent = ayar.isletme_adi;
+                    const mobileName = document.getElementById("mobile-business-name");
+                    if (mobileName) mobileName.textContent = ayar.isletme_adi;
+                }
+
+                if (ayar.aciklama) {
+                    const subtitle = document.getElementById("sidebar-h2");
+                    if (subtitle) subtitle.textContent = ayar.aciklama;
+                }
+            }
+        } catch (error) {
+            console.error("Genel ayarlar alınamadı:", error);
+        }
+    });
+
+    async function loadEmployeesFromBackend() {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/personel");
+            const employees = await response.json();
+
+            employeeList.innerHTML = '';
+            employees.forEach(employee => {
+                const hizmetListesi = employee.hizmetler.split(',').map(item => item.trim());
+                addEmployeeToList(employee.ad, hizmetListesi, employee.id);
+            });
+        } catch (error) {
+            console.error("Personeller alınamadı:", error);
+        }
+    }
+
+    function addEmployeeToList(name, services, id) {
+        const listItem = document.createElement('li');
+        listItem.dataset.id = id;
+        listItem.innerHTML = `
+            <strong>${name}</strong> - <span>${services.join(', ')}</span>
+            <button class="edit-btn">Düzenle</button>
+            <button class="delete-btn">Sil</button>
+        `;
+        employeeList.appendChild(listItem);
+
+        listItem.querySelector('.edit-btn').addEventListener('click', () => {
+            employeeNameInput.value = name;
+            const checkboxes = document.querySelectorAll('#services-checkbox-list input');
+            checkboxes.forEach(cb => cb.checked = services.includes(cb.value));
+            editingEmployeeId = id;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        listItem.querySelector('.delete-btn').addEventListener('click', async () => {
+            if (confirm('Silmek istediğinize emin misiniz?')) {
+                await deleteEmployeeFromBackend(id);
+                listItem.remove();
+            }
+        });
+    }
+
+    async function deleteEmployeeFromBackend(id) {
+        try {
+            await fetch(`http://127.0.0.1:8000/api/personel-sil/${id}/`, {
+                method: "DELETE"
+            });
+        } catch (error) {
+            console.error("Silme hatası:", error);
+        }
+    }
+
+    employeeForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const employeeName = employeeNameInput.value.trim();
+        const selectedServices = Array.from(document.querySelectorAll('#services-checkbox-list input:checked'))
+            .map(input => input.value);
+
+        if (employeeName && selectedServices.length > 0) {
+            const payload = {
+                ad: employeeName,
+                hizmetler: selectedServices
+            };
+
+            try {
+                if (editingEmployeeId !== null) {
+                    await deleteEmployeeFromBackend(editingEmployeeId);
+                }
+
+                const response = await fetch("http://127.0.0.1:8000/api/personel-ekle", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                if (response.ok && result.status === "ok") {
+                    addEmployeeToList(employeeName, selectedServices, result.id || editingEmployeeId || Date.now());
+                    employeeForm.reset();
+                    editingEmployeeId = null;
+                    successMessage.textContent = 'Personel başarıyla kaydedildi!';
+                    successMessage.style.display = 'block';
+                    setTimeout(() => { successMessage.style.display = 'none'; }, 3000);
+                } else {
+                    alert("Kaydedilemedi.");
+                }
+            } catch (error) {
+                console.error("Kayıt hatası:", error);
+            }
+        } else {
+            alert('Lütfen personel adı girin ve en az bir hizmet seçin.');
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', async function () {
+        await loadBusinessInfo();
+        await createServiceCheckboxes();
+        await loadEmployeesFromBackend();
+    });
+
+    // Menü açma/kapatma işlemi
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+        document.getElementById("mobile-menu").classList.toggle("open");
+    });
+
+    document.querySelectorAll('.mobile-menu .has-submenu > a').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const parent = this.parentElement;
+            parent.classList.toggle('open');
+        });
+    });
+</script>
+
+</body>
+</html>

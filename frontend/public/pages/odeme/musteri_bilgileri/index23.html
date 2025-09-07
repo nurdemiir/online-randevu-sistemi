@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Müşteri Bilgileri - Randevunu Bul</title>
+  <link rel="stylesheet" href="styles23.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="steps-indicator">
+      <div class="step"><div class="step-number">1</div><span>Hizmet Seçimi</span></div>
+      <div class="step-divider"></div>
+      <div class="step"><div class="step-number">2</div><span>Tarih & Saat</span></div>
+      <div class="step-divider"></div>
+      <div class="step active"><div class="step-number">3</div><span>Bilgiler</span></div>
+      <div class="step-divider"></div>
+      <div class="step"><div class="step-number">4</div><span>Onay</span></div>
+    </div>
+
+    <div class="form-card">
+      <h2>Müşteri Bilgileri</h2>
+      <form class="customer-form" id="customerForm">
+        <div class="form-group required">
+          <label for="name">Ad</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group required">
+          <label for="surname">Soyad</label>
+          <input type="text" id="surname" name="surname" required>
+        </div>
+
+        <div class="form-group required">
+          <label for="phone">Telefon</label>
+          <input type="tel" id="phone" name="phone" placeholder="5XX XXX XX XX" required>
+          <div class="form-hint">Örnek: 5XX XXX XX XX</div>
+        </div>
+
+        <div class="form-group required">
+          <label for="email">E-posta</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group full-width">
+          <div class="contact-preferences">
+            <h3>İletişim Tercihleri</h3>
+            <div class="checkbox-group">
+              <div class="checkbox-item">
+                <input type="checkbox" id="smsNotification">
+                <label for="smsNotification">SMS ile bilgilendir</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="emailNotification">
+                <label for="emailNotification">E-posta ile bilgilendir</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="whatsappNotification">
+                <label for="whatsappNotification">WhatsApp ile bilgilendir</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group full-width">
+          <div class="privacy-consent">
+            <div class="privacy-text">
+              Kişisel verileriniz, randevu hizmetinin sağlanması amacıyla, 6698 sayılı KVKK kapsamında işlenmektedir. 
+              Detaylı bilgi için <a href="#">Aydınlatma Metni</a>'ni inceleyebilirsiniz.
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="privacyConsent" required>
+              <label for="privacyConsent">Kişisel verilerimin işlenmesini kabul ediyorum</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-group full-width">
+          <button type="button" class="btn btn-secondary" onclick="window.location.href='../tarih_saat/index22.html'">Geri Dön</button>
+          <button type="submit" class="btn btn-primary">Devam Et</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const BASE_URL = "http://127.0.0.1:8000";
+  const urlParams = new URLSearchParams(window.location.search);
+  const randevuId = urlParams.get("randevu_id");
+
+  if (!randevuId) {
+    alert("Randevu ID bulunamadı.");
+    return;
+  }
+
+  // ✅ Randevu bilgilerini çek ve formu doldur
+  try {
+    const response = await fetch(`${BASE_URL}/api/randevu/${randevuId}/`);
+    if (!response.ok) throw new Error("Veri alınamadı.");
+    const randevu = await response.json();
+
+    document.getElementById("name").value = randevu.ad || "";
+    document.getElementById("surname").value = randevu.soyad || "";
+    document.getElementById("phone").value = randevu.telefon || "";
+    document.getElementById("email").value = randevu.email || "";
+
+    document.getElementById("smsNotification").checked = randevu.sms || false;
+    document.getElementById("emailNotification").checked = randevu.email_bilgilendirme || false;
+    document.getElementById("whatsappNotification").checked = randevu.whatsapp || false;
+    document.getElementById("privacyConsent").checked = randevu.kvkk || false;
+
+  } catch (error) {
+    console.error("Randevu bilgisi alınamadı:", error);
+    alert("Müşteri bilgileri yüklenemedi.");
+  }
+
+  // ✅ Form gönderilince bilgileri güncelle
+  document.getElementById("customerForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const data = {
+      ad: document.getElementById("name").value.trim(),
+      soyad: document.getElementById("surname").value.trim(),
+      telefon: document.getElementById("phone").value.replace(/\D/g, ''), // Sadece rakamlar
+      email: document.getElementById("email").value.trim(),
+      sms: document.getElementById("smsNotification").checked,
+      email_bilgilendirme: document.getElementById("emailNotification").checked,
+      whatsapp: document.getElementById("whatsappNotification").checked,
+      kvkk: document.getElementById("privacyConsent").checked,
+    };
+
+    if (!data.ad || !data.soyad || !data.telefon || !data.email || !data.kvkk) {
+      alert("Lütfen tüm zorunlu alanları doldurun ve KVKK kutucuğunu işaretleyin.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${BASE_URL}/api/randevu-guncelle/${randevuId}/`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        // ✅ Onay sayfasına yönlendir
+        window.location.href = `../on_izleme/index24.html?randevu_id=${randevuId}`;
+      } else {
+        const errData = await res.json();
+        alert("Hata oluştu:\n" + JSON.stringify(errData));
+      }
+    } catch (err) {
+      console.error("Sunucu hatası:", err);
+      alert("Sunucuya ulaşılamadı.");
+    }
+  });
+});
+</script>
+
+</body>
+</html>

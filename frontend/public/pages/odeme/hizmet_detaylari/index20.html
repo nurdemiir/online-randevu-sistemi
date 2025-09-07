@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hizmet Detayları - Randevunu Bul</title>
+    <link rel="stylesheet" href="styles20.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Adım Göstergesi -->
+        <div class="steps-indicator">
+            <div class="step active">
+                <div class="step-number">1</div>
+                <span>Hizmet Seçimi</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <span>Tarih & Saat</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <span>Bilgiler</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <span>Onay</span>
+            </div>
+        </div>
+
+        <!-- Ana İçerik -->
+        <div class="form-card">
+            <h2>Hizmet Seçimi</h2>
+
+            <!-- Hizmet Detayları -->
+            <div id="selected-service" class="service-details">
+                <div class="service-header">
+                    <h3>Seçilen Hizmet</h3>
+                    <div class="service-price-tag" id="service-price">-</div>
+                </div>
+
+                <div class="service-content">
+                    <div class="service-image">
+                        <img src="" alt="Hizmet Görseli" id="service-image">
+                        <div class="service-duration">
+                            <i class="fas fa-clock"></i>
+                            <span id="service-duration">- dakika</span>
+                        </div>
+                    </div>
+
+                    <div class="service-info">
+                        <h4 id="service-name">-</h4>
+                        <p id="service-description" class="service-description">-</p>
+                        <div class="read-more-btn" id="read-more">Devamını Oku</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personel Seçimi -->
+            <div class="staff-selection-section">
+                <h3>Personel Seçimi</h3>
+                <div class="staff-grid" id="staff-grid">
+                    <!-- Personel kartları dinamik olarak buraya eklenecek -->
+                </div>
+            </div>
+
+            <!-- Butonlar -->
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="goBack()">
+                    <i class="fas fa-arrow-left"></i>
+                    Geri Dön
+                </button>
+                <button class="btn btn-primary" id="next-button" onclick="proceedToNext()" disabled>
+                    Devam Et
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const BASE_URL = "http://127.0.0.1:8000";
+    let selectedStaffName = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const hizmetID = urlParams.get('hizmet_id');
+        const nextButton = document.getElementById('next-button');
+
+        if (!hizmetID) {
+            document.getElementById('selected-service').innerHTML = '<p class="no-service">Hizmet ID bulunamadı.</p>';
+            nextButton.disabled = true;
+            return;
+        }
+
+        try {
+            // 1. Hizmet detaylarını al
+            const response = await fetch(`${BASE_URL}/api/hizmet/${hizmetID}/`);
+            const selectedService = await response.json();
+
+            const foto = selectedService.hizmet_fotografi
+                ? `${BASE_URL}${selectedService.hizmet_fotografi}`
+                : "/frontend/public/img/default-service.jpg";
+
+            const fullDescription = selectedService.detayli_aciklama || "Açıklama bulunamadı";
+            const maxLength = 150;
+            const truncatedDescription = fullDescription.length > maxLength
+                ? fullDescription.slice(0, maxLength) + '...'
+                : fullDescription;
+
+            document.getElementById('service-name').textContent = selectedService.hizmet_adi;
+            document.getElementById('service-price').textContent = `${selectedService.fiyat} ₺`;
+            document.getElementById('service-duration').textContent = `${selectedService.seans_suresi} dakika`;
+            document.getElementById('service-image').src = foto;
+            document.getElementById('service-description').textContent = truncatedDescription;
+
+            let isExpanded = false;
+            const readMoreBtn = document.getElementById('read-more');
+            const descEl = document.getElementById('service-description');
+
+            readMoreBtn.addEventListener('click', () => {
+                if (!isExpanded) {
+                    descEl.textContent = fullDescription;
+                    readMoreBtn.textContent = 'Daha Az Göster';
+                } else {
+                    descEl.textContent = truncatedDescription;
+                    readMoreBtn.textContent = 'Devamını Oku';
+                }
+                isExpanded = !isExpanded;
+            });
+
+
+
+            // 2. Personel getir
+            const personelRes = await fetch(`${BASE_URL}/api/personel`);
+            const personeller = await personelRes.json();
+            const uyumlu = personeller.filter(p =>
+                p.hizmetler.split(',').map(x => x.trim()).includes(selectedService.hizmet_adi)
+            );
+
+            const staffGrid = document.getElementById('staff-grid');
+            staffGrid.innerHTML = '';
+
+            if (uyumlu.length > 0) {
+                uyumlu.forEach(staff => {
+                    const card = document.createElement('div');
+                    card.className = 'staff-card';
+                    card.innerHTML = `<div class="staff-info"><h4>${staff.ad}</h4></div>`;
+
+                    card.addEventListener('click', () => {
+                        document.querySelectorAll('.staff-card').forEach(c => c.classList.remove('selected'));
+                        card.classList.add('selected');
+                        selectedStaffName = staff.ad;
+                        nextButton.disabled = false;
+                    });
+
+                    staffGrid.appendChild(card);
+                });
+            } else {
+                staffGrid.innerHTML = '<p class="no-staff">Bu hizmet için uygun personel bulunamadı.</p>';
+            }
+        } catch (error) {
+            console.error("Veri alınırken hata:", error);
+            document.getElementById('selected-service').innerHTML = '<p class="no-service">Veriler yüklenemedi.</p>';
+            document.getElementById('next-button').disabled = true;
+        }
+    });
+
+    function goBack() {
+        window.history.back();
+    }
+
+    async function proceedToNext() {
+        const hizmetID = new URLSearchParams(window.location.search).get('hizmet_id');
+        if (!selectedStaffName) {
+            alert("Lütfen bir personel seçiniz.");
+            return;
+        }
+
+        try {
+            const sidebarName = document.getElementById('sidebar-h1')?.textContent || "";
+            const response = await fetch(`${BASE_URL}/api/randevu-al/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    hizmet_id: hizmetID,
+                    personel_adi: selectedStaffName,
+                    ad: "",
+                    soyad: "",
+                    telefon: "",
+                    email: "",
+                    tarih: null,
+                    seans_baslangic: null,
+                    seans_bitis: null,
+                    isletme: sidebarName,
+                    sms: false,
+                    email_bilgilendirme: false,
+                    whatsapp: false,
+                    kvkk: false
+                })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || result.error) {
+                alert("Randevu oluşturulamadı: " + (result.error || "Hata"));
+                return;
+            }
+
+            // ✅ Sonraki sayfaya yönlendir, personel adı ve randevu ID ile
+            const nextUrl = `../tarih_saat/index22.html?hizmet_id=${hizmetID}&personel=${encodeURIComponent(selectedStaffName)}&randevu_id=${result.id}`;
+            window.location.href = nextUrl;
+        } catch (error) {
+            console.error("Randevu oluşturulurken hata:", error);
+            alert("Sunucuya bağlanılamadı.");
+        }
+    }
+</script>
+
+</body>
+</html>

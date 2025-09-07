@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İşletme Yönetimi - SSS Ayarları</title>
+    <link rel="stylesheet" href="styles12.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/frontend/src/js/businessInfo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Tab-bar -->
+        <div class="tab-bar">
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Genel Ayarlar</a>
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/randevu_ayarlari/index9.html">Randevu Ayarları</a>
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/galeri_ayarlari/index7.html">Galeri Ayarları</a>
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/iletisim_ayarlari/index11.html">İletişim Ayarları</a>
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/sss_ayarlari/index12.html">SSS Ayarları</a>
+        </div>
+        
+        <aside class="sidebar">
+            <img id="business-image" src="/frontend/src/assets/images/default-image.png" alt="İşletme Fotoğrafı">
+            <h1 id="sidebar-h1">Varsayılan İşletme</h1>
+            <h2 id="sidebar-h2">Panel</h2>
+            <nav>
+                <ul>
+                    <li><a href="/frontend/public/pages/isletme_panel/anasayfa/index6.html">Randevu Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/personel/index27.html">Personel Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/performans/index30.html" class="active">İşletme Performansı</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Ayarlar</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        
+        <button class="mobile-menu-toggle" id="menu-toggle">&#9776;</button>
+            
+            <header class="mobile-header" id="mobile-header">
+                <img id="mobile-business-image" src="default-image.jpg" alt="İşletme Fotoğrafı" />
+                <h1 id="mobile-business-name">İşletme Adı</h1>
+            </header>
+
+            <div class="mobile-menu" id="mobile-menu">
+                <ul>
+                    <li><a href="/frontend/public/pages/isletme_panel/anasayfa/index6.html">Randevu Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/personel/index27.html">Personel Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/performans/index30.html">İşletme Performansı</a></li>
+                    <li class="has-submenu">
+                        <a href="#">Ayarlar</a>
+                        <ul class="submenu">
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Genel Ayarlar</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/randevu_ayarlari/index9.html">Randevu Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/galeri_ayarlari/index7.html">Galeri Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/iletisim_ayarlari/index11.html">İletişim Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/sss_ayarlari/index12.html">SSS Ayarları</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        <main class="main-content">
+            <h2>Sık Sorulan Sorular Ayarları</h2>
+            <form class="faq-form">
+                <label for="question">Sorulabilecek Soru</label>
+                <input type="text" id="question" placeholder="Sorulan soru?">
+
+                <label for="answer">Verilecek Cevap</label>
+                <textarea id="answer" placeholder="Cevap..."></textarea>
+
+                <button type="button" class="add-btn">Kaydet</button>
+            </form>
+        </main>
+
+        <div class="on-izleme">
+            <h2>Ön izleme</h2>
+            <div class="preview-box" id="faqPreview"></div>
+        </div>
+        
+
+<!-- SortableJS kütüphanesi -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+<script>
+let editId = null;
+
+document.addEventListener('DOMContentLoaded', async function () {
+    await loadBusinessInfo();
+
+    const previewBox = document.getElementById("faqPreview");
+
+    // Sürükle-bırak sıralama
+    new Sortable(previewBox, {
+        animation: 150,
+        onEnd: saveOrderToBackend
+    });
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/api/sss");
+        const faqs = await response.json();
+
+        faqs.forEach((faq, index) => {
+            createFAQItem(faq, index);
+        });
+    } catch (error) {
+        console.error("Ön izleme verileri alınamadı:", error);
+    }
+});
+
+async function addOrEditFAQ() {
+    const question = document.getElementById("question").value.trim();
+    const answer = document.getElementById("answer").value.trim();
+
+    if (!question || !answer) {
+        alert("Lütfen hem soru hem de cevap giriniz.");
+        return;
+    }
+
+    const payload = {
+        soru: question,
+        cevap: answer
+    };
+
+    try {
+        let url = "http://127.0.0.1:8000/api/sss/ekle";
+        let method = "POST";
+
+        if (editId !== null) {
+            url = `http://127.0.0.1:8000/api/sss/guncelle/${editId}`;
+            method = "PUT";
+        }
+
+        const response = await fetch(url, {
+            method: method,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.status === "ok") {
+            alert(editId ? "Soru güncellendi!" : "Soru başarıyla kaydedildi!");
+            document.getElementById("question").value = "";
+            document.getElementById("answer").value = "";
+            document.querySelector(".add-btn").textContent = 'Kaydet';
+            editId = null;
+            location.reload();
+        } else {
+            alert("Hata oluştu: " + (result.error || "Bilinmeyen hata"));
+        }
+    } catch (error) {
+        alert("Sunucu hatası: " + error.message);
+    }
+}
+
+function createFAQItem(faq, index) {
+    const previewBox = document.getElementById("faqPreview");
+    const faqItem = document.createElement("div");
+    faqItem.classList.add("faq-item");
+    faqItem.dataset.id = faq.id;
+
+    const accordionHeader = document.createElement("button");
+    accordionHeader.classList.add("accordion-header");
+    accordionHeader.textContent = faq.soru;
+
+    const accordionContent = document.createElement("div");
+    accordionContent.classList.add("accordion-content");
+    accordionContent.style.display = "none";
+    const answerPara = document.createElement("p");
+    answerPara.textContent = faq.cevap;
+    accordionContent.appendChild(answerPara);
+
+    const editBtn = document.createElement("button");
+    editBtn.classList.add("edit-btn");
+    editBtn.textContent = "Düzenle";
+    editBtn.onclick = function () {
+        editFAQ(faqItem, index);
+    };
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.classList.add("delete-btn");
+    deleteBtn.textContent = "Sil";
+    deleteBtn.onclick = async function () {
+        if (confirm("Silmek istediğinize emin misiniz?")) {
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/api/sss/sil/${faq.id}`, {
+                    method: "DELETE"
+                });
+                if (response.ok) {
+                    faqItem.remove();
+                    saveOrderToBackend();
+                } else {
+                    alert("Silme işlemi başarısız.");
+                }
+            } catch (err) {
+                alert("Sunucu hatası: " + err.message);
+            }
+        }
+    };
+
+    faqItem.appendChild(accordionHeader);
+    faqItem.appendChild(accordionContent);
+    faqItem.appendChild(editBtn);
+    faqItem.appendChild(deleteBtn);
+    previewBox.appendChild(faqItem);
+}
+
+// Akordiyon işlevi
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('accordion-header')) {
+        const content = e.target.nextElementSibling;
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    }
+});
+
+// Sıralamayı backend'e gönder
+function saveOrderToBackend() {
+    const previewBox = document.getElementById("faqPreview");
+    const faqItems = previewBox.querySelectorAll(".faq-item");
+    const siralama = [];
+
+    faqItems.forEach(item => {
+        const id = item.dataset.id;
+        if (id) siralama.push(parseInt(id));
+    });
+
+    fetch("http://127.0.0.1:8000/api/sss/sirala", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ siralama })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status !== "ok") {
+            console.error("Sıralama kaydedilemedi:", data.message || data.error);
+        }
+    })
+    .catch(error => {
+        console.error("Sıralama güncelleme hatası:", error);
+    });
+}
+
+function editFAQ(faqItem, index) {
+    const question = faqItem.querySelector(".accordion-header").textContent;
+    const answer = faqItem.querySelector(".accordion-content p").textContent;
+    editId = faqItem.dataset.id;
+
+    document.getElementById("question").value = question;
+    document.getElementById("answer").value = answer;
+    document.querySelector(".add-btn").textContent = 'Güncelle';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelector('.add-btn').addEventListener('click', addOrEditFAQ);
+
+// Mobil menü
+document.getElementById("menu-toggle").addEventListener("click", function () {
+    document.getElementById("mobile-menu").classList.toggle("open");
+});
+document.querySelectorAll('.mobile-menu .has-submenu > a').forEach(link => {
+    link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const parent = this.parentElement;
+        parent.classList.toggle('open');
+    });
+});
+
+// İşletme bilgisi
+window.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const response = await fetch("http://localhost:8000/api/genel-ayarlar/liste");
+        const ayarlar = await response.json();
+        const ayar = ayarlar[0];
+
+        if (ayar) {
+            // Ana başlık ve alt başlığı tüm sayfalarda güncelle
+            if (ayar.logo) {
+                    document.getElementById("business-image").src = ayar.logo;
+                    const mobileImage = document.getElementById("mobile-business-image");
+                    if (mobileImage) mobileImage.src = ayar.logo;
+            }
+
+            if (ayar.isletme_adi) {
+                document.getElementById("sidebar-h1").textContent = ayar.isletme_adi;
+                const mobileName = document.getElementById("mobile-business-name");
+                if (mobileName) mobileName.textContent = ayar.isletme_adi;
+            }
+
+            if (ayar.aciklama) {
+                const subtitle = document.getElementById("sidebar-h2");
+                if (subtitle) subtitle.textContent = ayar.aciklama;
+            }
+        }
+    } catch (error) {
+        console.error("Genel ayarlar alınamadı:", error);
+    }
+});
+
+</script>
+
+</body>
+</html>

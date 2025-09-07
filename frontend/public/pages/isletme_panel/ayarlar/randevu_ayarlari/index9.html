@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İşletme Yönetimi - Randevu Ayarları</title>
+    <link rel="stylesheet" href="styles9.css">
+    <script src="/frontend/src/js/businessInfo.js"></script>
+</head>
+<body>
+    <div class="container">
+         <!-- Tab-bar -->
+        <div class="tab-bar">
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Genel Ayarlar</a>
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/randevu_ayarlari/index9.html">Randevu Ayarları</a>
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/galeri_ayarlari/index7.html">Galeri Ayarları</a>
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/iletisim_ayarlari/index11.html">İletişim Ayarları</a>
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/sss_ayarlari/index12.html">SSS Ayarları</a>
+        </div>
+        
+        <div class="content">
+            <aside class="sidebar">
+                <img id="business-image" src="/frontend/src/assets/images/default-image.png" alt="İşletme Fotoğrafı">
+                <h1 id="sidebar-h1">Varsayılan İşletme</h1>
+                <h2 id="sidebar-h2">Panel</h2>
+                <nav>
+                    <ul>
+                        <li><a href="/frontend/public/pages/isletme_panel/anasayfa/index6.html">Randevu Yönetimi</a></li>
+                        <li><a href="/frontend/public/pages/isletme_panel/personel/index27.html">Personel Yönetimi</a></li>
+                        <li><a href="/frontend/public/pages/isletme_panel/performans/index30.html" class="active">İşletme Performansı</a></li>
+                        <li><a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Ayarlar</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <button class="mobile-menu-toggle" id="menu-toggle">&#9776;</button>
+            
+            <header class="mobile-header" id="mobile-header">
+                <img id="mobile-business-image" src="/frontend/src/assets/images/default-image.png" alt="İşletme Fotoğrafı" />
+                <h1 id="mobile-business-name">İşletme Adı</h1>
+            </header>
+
+            <div class="mobile-menu" id="mobile-menu">
+                <ul>
+                    <li><a href="/frontend/public/pages/isletme_panel/anasayfa/index6.html">Randevu Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/personel/index27.html">Personel Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/performans/index30.html">İşletme Performansı</a></li>
+                    <li class="has-submenu">
+                        <a href="#">Ayarlar</a>
+                        <ul class="submenu">
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Genel Ayarlar</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/randevu_ayarlari/index9.html">Randevu Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/galeri_ayarlari/index7.html">Galeri Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/iletisim_ayarlari/index11.html">İletişim Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/sss_ayarlari/index12.html">SSS Ayarları</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="admin-hizmetler"></div>
+
+            <main class="main-content">
+                <section class="servis">
+                    <h2>Randevu Ayarları</h2>
+                    <form id="service-form">
+                        <label for="service-name">Hizmet Adı:</label>
+                        <input type="text" id="service-name" required>
+
+                        <label for="service-description">Açıklama:</label>
+                        <textarea id="service-description" maxlength="100" required oninput="checkDescriptionLength()"></textarea>
+                        <span id="char-count"></span>
+
+                        <label for="service-detailed-description">Detaylı Açıklama:</label>
+                        <textarea id="service-detailed-description" maxlength="1000"></textarea>
+
+                        <label for="service-duration">Seans Süresi (dakika):</label>
+                        <input type="text" id="service-duration" required placeholder="Dakika cinsinden" oninput="validateNumber(this)">
+
+                        <label for="service-price">Fiyat (TL):</label>
+                        <input type="text" id="service-price" required placeholder="TL cinsinden" oninput="validateNumber(this)">
+
+                        <label for="service-image">Hizmet Fotoğrafı:</label>
+                        <input type="file" id="service-image" accept="image/*">
+                        <button type="submit">Kaydet</button>
+                    </form>
+                </section>
+
+                <section class="open_close">
+                    <h2>Açılış ve Kapanış Saatleri</h2>
+                    <label for="opening-time">Açılış Saati:</label>
+                    <input type="time" id="opening-time" min="00:00" max="23:59" value="00:00" required>
+
+                    <label for="closing-time">Kapanış Saati:</label>
+                    <input type="time" id="closing-time" min="00:00" max="23:59" value="00:00" required>
+                    <p id="time-save-message" class="success-message"></p>
+                    <div style="height: 10px;"></div>
+                    <button type="button" id="save-time-button" class="save-button">Kaydet</button>
+                </section>
+
+                <div class="time-info-box" id="time-display">
+                    <h3>Ön İzleme</h3>
+                    <p>Açılış Saati: <span id="display-opening-time">00:00</span></p>
+                    <p>Kapanış Saati: <span id="display-closing-time">00:00</span></p>
+                </div>
+
+                <section class="set">
+                    <div id="services-list" class="set"></div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <div id="footer-placeholder"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script>
+const BASE_URL = "http://127.0.0.1:8000";
+const form = document.getElementById('service-form');
+const servicesList = document.getElementById('services-list');
+const serviceImageInput = document.getElementById('service-image');
+const timeSaveMessage = document.getElementById('time-save-message');
+let editId = null;
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+new Sortable(servicesList, {
+    animation: 150,
+    onEnd: async function () {
+        const yeniSira = [...servicesList.children].map(item => item.dataset.id);
+        await fetch(`${BASE_URL}/api/hizmet-sira-guncelle/`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie("csrftoken"),
+            },
+            body: JSON.stringify({ sira: yeniSira }),
+        });
+    }
+});
+
+async function displayServices() {
+    try {
+        const response = await fetch(`${BASE_URL}/api/hizmetler`);
+        const services = await response.json();
+        servicesList.innerHTML = '';
+
+        services.forEach(service => {
+            const serviceDiv = document.createElement('div');
+            serviceDiv.classList.add('service-item');
+            serviceDiv.dataset.id = service.id;
+
+            serviceDiv.innerHTML = `
+                <h4>${service.hizmet_adi}</h4>
+                <img src="${BASE_URL}${service.hizmet_fotografi}" alt="${service.hizmet_adi}" style="width: 100px; height: auto;">
+                <p>${service.aciklama}</p>
+                <p>Seans Süre: <strong>${service.seans_suresi}</strong> dakika</p>
+                <p>Fiyat: <strong>${service.fiyat}</strong> TL</p>
+                <p><strong>Detaylı Açıklama:</strong><br>${service.detayli_aciklama.replace(/\n/g, '<br>')}</p>
+                <button class="edit-btn" onclick="editService(${service.id})">Düzenle</button>
+                <button class="delete-btn" onclick="deleteService(${service.id})">Sil</button>
+            `;
+            servicesList.appendChild(serviceDiv);
+        });
+    } catch (error) {
+        console.error('Hizmetler yüklenirken hata:', error);
+        servicesList.innerHTML = '<p>Hizmetler yüklenirken hata oluştu.</p>';
+    }
+}
+
+form.addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const serviceName = document.getElementById('service-name').value;
+    const serviceDescription = document.getElementById('service-description').value;
+    const serviceDetailedDescription = document.getElementById('service-detailed-description').value;
+    const serviceDuration = document.getElementById('service-duration').value;
+    const servicePrice = document.getElementById('service-price').value;
+    const openingTime = document.getElementById('opening-time').value;
+    const closingTime = document.getElementById('closing-time').value;
+    const file = serviceImageInput.files[0];
+
+    if (!serviceName || !serviceDescription || !serviceDuration || !servicePrice || (!file && !editId)) {
+        alert("Tüm alanları doldurun. Yeni hizmet ekliyorsanız fotoğraf da seçilmelidir.");
+        return;
+    }
+
+    if (isNaN(serviceDuration) || isNaN(servicePrice)) {
+        alert("Lütfen seans süre ve fiyat bölümüe yalnızca sayı giriniz.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('hizmet_adi', serviceName);
+    formData.append('aciklama', serviceDescription);
+    formData.append('detayli_aciklama', serviceDetailedDescription);
+    formData.append('seans_suresi', serviceDuration);
+    formData.append('fiyat', servicePrice);
+    formData.append('acilis_saati', openingTime);
+    formData.append('kapanis_saati', closingTime);
+    if (file) formData.append('hizmet_fotografi', file);
+
+    try {
+        let url = editId ? `${BASE_URL}/api/hizmet-duzenle/${editId}/` : `${BASE_URL}/api/hizmet-ekle/`;
+        const response = await fetch(url, {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert(editId ? 'Hizmet güncellendi!' : 'Hizmet kaydedildi!');
+            form.reset();
+            serviceImageInput.value = '';
+            editId = null;
+            await displayServices();
+        } else {
+            alert(`Hata: ${result.error || 'İşlem gerçekleştirilemedi.'}`);
+        }
+    } catch (error) {
+        alert(`Hata: ${error.message}`);
+    }
+});
+
+async function deleteService(id) {
+    if (confirm("Silmek istediğinize emin misiniz?")) {
+        try {
+            const response = await fetch(`${BASE_URL}/api/hizmet-sil/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+            const result = await response.json();
+            if (response.ok) {
+                alert('Hizmet silindi!');
+                await displayServices();
+            } else {
+                alert(`Hata: ${result.error || 'Silinemedi.'}`);
+            }
+        } catch (error) {
+            alert(`Silme hatası: ${error}`);
+        }
+    }
+}
+
+async function editService(id) {
+    try {
+        const response = await fetch(`${BASE_URL}/api/hizmet/${id}`);
+        const service = await response.json();
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        document.getElementById('service-name').value = service.hizmet_adi;
+        document.getElementById('service-description').value = service.aciklama;
+        document.getElementById('service-detailed-description').value = service.detayli_aciklama;
+        document.getElementById('service-duration').value = service.seans_suresi;
+        document.getElementById('service-price').value = service.fiyat;
+        editId = id;
+
+        const oldPreview = document.getElementById('image-preview');
+        if (oldPreview) oldPreview.remove();
+
+        if (service.hizmet_fotografi) {
+            const preview = document.createElement('p');
+            preview.id = "image-preview";
+            preview.textContent = '';
+            const inputElement = document.getElementById('service-image');
+            inputElement.insertAdjacentElement('afterend', preview);
+        }
+
+        alert('Düzenleme hazır. Fotoğraf seçilmezse mevcut fotoğraf korunur.');
+    } catch (error) {
+        console.error('Düzenlenecek hizmet alınamadı:', error);
+        alert("Hizmet bilgileri alınamadı.");
+    }
+}
+
+document.getElementById('save-time-button').addEventListener('click', async function () {
+    const openingTime = document.getElementById('opening-time').value;
+    const closingTime = document.getElementById('closing-time').value;
+
+    try {
+        const response = await fetch(`${BASE_URL}/api/genel-ayarlar/saat/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ acilis_saati: openingTime, kapanis_saati: closingTime })
+        });
+        const result = await response.json();
+
+        if (response.ok) {
+            timeSaveMessage.textContent = "Saatler kaydedildi!";
+            timeSaveMessage.style.display = 'block';
+
+            // Yeni saatleri tekrar API'den çek
+            const updatedSettings = await fetch(`${BASE_URL}/api/genel-ayarlar/saat/`);
+            const updated = await updatedSettings.json();
+
+            // ✅ showSavedTimes çağrısı öncesinde console.log ile denetle
+            console.log("Güncellenen saatler:", updated.acilis_saati, updated.kapanis_saati);
+
+            showSavedTimes(
+                updated.acilis_saati?.substring(0, 5) || "00:00",
+                updated.kapanis_saati?.substring(0, 5) || "00:00"
+            );
+        } else {
+            timeSaveMessage.textContent = `Hata: ${result.error || 'Saatler kaydedilemedi.'}`;
+            timeSaveMessage.style.display = 'block';
+        }
+    } catch (error) {
+        timeSaveMessage.textContent = `Hata: ${error.message}`;
+        timeSaveMessage.style.display = 'block';
+    }
+});
+
+
+function showSavedTimes(openingTime, closingTime) {
+    const displayOpeningTime = document.getElementById('display-opening-time');
+    const displayClosingTime = document.getElementById('display-closing-time');
+    const timeDisplay = document.getElementById('time-display');
+
+    displayOpeningTime.textContent = openingTime;
+    displayClosingTime.textContent = closingTime;
+    timeDisplay.style.display = 'block';
+}
+
+window.onload = async function () {
+    await loadBusinessInfo();
+    await displayServices();
+    try {
+        const response = await fetch(`${BASE_URL}/api/genel-ayarlar/saat/`);
+        const ayar = await response.json();
+        document.getElementById('opening-time').value = ayar.acilis_saati || "00:00";
+        document.getElementById('closing-time').value = ayar.kapanis_saati || "00:00";
+        showSavedTimes(ayar.acilis_saati, ayar.kapanis_saati);
+    } catch (error) {
+        console.error('Ayarlar alınamadı:', error);
+    }
+};
+
+async function loadBusinessInfo() {
+    const BASE_URL = "http://localhost:8000"; // Gerekirse dışarıdan da tanımlı olabilir
+    try {
+        const response = await fetch(`${BASE_URL}/api/genel-ayarlar/liste`);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const ayarlar = await response.json();
+        const ayar = ayarlar[0];
+
+        if (ayar) {
+            // Logo
+            if (ayar.logo) {
+                    document.getElementById("business-image").src = ayar.logo;
+                    const mobileImage = document.getElementById("mobile-business-image");
+                    if (mobileImage) mobileImage.src = ayar.logo;
+                }
+
+            // İşletme Adı
+            if (ayar.isletme_adi) {
+                const sidebarTitle = document.getElementById("sidebar-h1");
+                const mobileTitle = document.getElementById("mobile-business-name");
+                if (sidebarTitle) sidebarTitle.textContent = ayar.isletme_adi;
+                if (mobileTitle) mobileTitle.textContent = ayar.isletme_adi;
+            }
+
+            // Açıklama
+            if (ayar.aciklama) {
+                const subtitle = document.getElementById("sidebar-h2");
+                if (subtitle) subtitle.textContent = ayar.aciklama;
+            }
+        }
+    } catch (error) {
+        console.error("Genel ayarlar alınamadı:", error);
+        const fallbackTitle = document.getElementById("sidebar-h1");
+        if (fallbackTitle) fallbackTitle.textContent = "İşletme Adı";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener("click", function () {
+            mobileMenu.classList.toggle("open");
+        });
+    }
+
+    document.querySelectorAll('.mobile-menu .has-submenu > a').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            this.parentElement.classList.toggle('open');
+        });
+    });
+});
+</script>
+
+
+</body>
+</html>

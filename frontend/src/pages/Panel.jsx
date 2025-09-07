@@ -1,0 +1,1 @@
+export default function Panel() { return <div>Yönetim Paneli</div>; }

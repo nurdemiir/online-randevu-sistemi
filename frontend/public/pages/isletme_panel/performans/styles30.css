@@ -1,0 +1,651 @@
+/* Genel ayarlar */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    margin-left: 320px; /* Sidebar'ın genişliği kadar yer açmak için */
+    padding: 20px;
+    padding-top: 55px;
+    flex-direction: column; 
+    overflow: visible !important; overflow: visible !important;
+}
+
+.sidebar {
+    background-color: #ffffff;
+    padding: 20px;
+    width: 300px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 0 8px 8px 0;
+}
+
+.sidebar  img {
+    width: 100%;  /* Sidebar genişliğini kaplayacak şekilde ayarlanır */
+    height: 200px; /* Sabit bir yükseklik ayarlanır */
+    object-fit: cover; /* Görüntü, çerçeveye düzgün şekilde sığar */
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.sidebar h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.sidebar h2 {
+    font-size: 20px;
+    color: #218838;
+    margin-bottom: 20px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.sidebar nav ul li {
+    margin: 15px 0;
+}
+
+.sidebar nav ul li a {
+    text-decoration: none;
+    color: #218838;
+    font-size: 18px;
+    padding: 10px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.sidebar nav ul li a:active {
+    transform: scale(0.98);
+}
+
+.main-content {
+    position: relative;
+    flex-grow: 1;
+    overflow: visible;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-content h1 {
+    font-size: 32px;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.header-content h1 i {
+    color: #218838;
+    margin-right: 12px;
+}
+
+.header-content p {
+    color: #7f8c8d;
+    font-size: 16px;
+    margin: 0;
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.btn-refresh {
+    background: linear-gradient(135deg, #218838 0%, #28a745 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-refresh:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(33, 136, 56, 0.3);
+}
+
+/* --- STİL İYİLEŞTİRMELERİ (styles6.css tarzında) --- */
+
+.revenue-section {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 30px;
+    margin-bottom: 30px;
+    display: grid;
+    gap: 20px;
+}
+
+.section-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.section-header h2 {
+    font-size: 28px;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.section-header h2 i {
+    color: #218838;
+}
+
+.section-header p {
+    color: #7f8c8d;
+    font-size: 16px;
+    margin: 0;
+}
+
+.revenue-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+    width: 100%;
+    min-width: 0;
+}
+
+.revenue-stat-card {
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.3s ease;
+    color: white;
+}
+.revenue-stat-card:nth-child(1) {
+    background: linear-gradient(135deg, #ffb347 0%, #ffcc33 100%);
+}
+.revenue-stat-card:nth-child(2) {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+.revenue-stat-card:nth-child(3) {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+.revenue-stat-card:nth-child(4) {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+.revenue-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(33,136,56,0.15);
+}
+.revenue-stat-card:nth-child(1):hover {
+    background: linear-gradient(135deg, #ffcc33 0%, #ffe066 100%);
+}
+.revenue-stat-card:nth-child(2):hover {
+    background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+}
+.revenue-stat-card:nth-child(3):hover {
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+}
+.revenue-stat-card:nth-child(4):hover {
+    background: linear-gradient(135deg, #38f9d7 0%, #43e97b 100%);
+}
+
+.revenue-stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+}
+.revenue-stat-card:nth-child(1) .revenue-stat-icon {
+    background: linear-gradient(135deg, #ffb347 0%, #ffcc33 100%);
+}
+.revenue-stat-card:nth-child(2) .revenue-stat-icon {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+.revenue-stat-card:nth-child(3) .revenue-stat-icon {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+.revenue-stat-card:nth-child(4) .revenue-stat-icon {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.revenue-stat-content h3 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #fff;
+}
+
+.revenue-stat-content p {
+    color: #e0e0e0;
+    font-size: 16px;
+    margin: 0;
+}
+
+.revenue-chart-container {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 24px;
+    margin-top: 20px;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.chart-header h3 {
+    font-size: 22px;
+    color: #2c3e50;
+    font-weight: 700;
+}
+
+.chart-actions .btn-refresh {
+    background: linear-gradient(135deg, #218838 0%, #28a745 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chart-actions .btn-refresh:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(33,136,56,0.3);
+}
+
+.chart-wrapper {
+    width: 100%;
+    min-height: 300px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(33,136,56,0.05);
+}
+
+
+/* --- Mobil Menü --- */
+/* Mobil Menü ve Header - styles6.css ile aynı */
+.mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 28px;
+    background: white;
+    border: none;
+    color: #218838;
+    z-index: 2001;
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 60px;
+    right: 15px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    z-index: 2000;
+    width: 250px;
+    padding: 16px;
+}
+
+.mobile-menu.open {
+    display: block;
+}
+
+.mobile-menu ul {
+    list-style: none;
+    margin: 0;
+}
+
+.mobile-menu ul li {
+    margin-bottom: 8px;
+}
+
+.mobile-menu ul li a {
+    display: block;
+    color: #2c3e50;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu ul li a:hover {
+    background: #f8f9fa;
+    color: #218838;
+}
+
+.mobile-header {
+    display: none;
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    padding: 16px;
+    background: white;
+    border-bottom: 1px solid #e9ecef;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.mobile-header img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.mobile-header h1 {
+    font-size: 24px;
+    color: #2c3e50;
+    margin: 0;
+    font-weight: 600;
+}
+
+.mobile-menu .has-submenu > a::after {
+    content: " ▼";
+    font-size: 12px;
+    float: right;
+    margin-top: 4px;
+}
+
+.mobile-menu .submenu {
+    display: none;
+    padding-left: 16px;
+    margin-top: 8px;
+}
+
+.mobile-menu .has-submenu.open .submenu {
+    display: block;
+}
+
+.mobile-menu .submenu li a {
+    padding: 8px 12px;
+    font-size: 14px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    margin: 4px 0;
+}
+
+/* --- Taşmayı Önleyici Modern Düzenlemeler --- */
+.container, .main-content, .revenue-section, .revenue-chart-container {
+    max-width: 100vw;
+    overflow-x: auto;
+    box-sizing: border-box;
+}
+
+.revenue-stat-card {
+    word-break: break-word;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.revenue-stat-content h3, .revenue-stat-content p {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    color: #fff !important;
+}
+
+@media screen and (max-width: 1200px) {
+    .container, .main-content, .revenue-section, .revenue-chart-container {
+        max-width: 100vw;
+        overflow-x: auto;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .revenue-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        margin-left: 0;
+        flex-direction: column;
+        padding: 0;
+        width: 100%;
+        
+    }
+
+
+    .sidebar {
+        display: none;
+        
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 16px;
+    }
+
+    .main-content h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .main-header {
+        top: 10px;
+        right: 10px;
+        gap: 5px;
+    }
+
+    .dashboard-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: white;
+    }
+
+    .header-content h1 {
+        font-size: 24px;
+    }
+    .revenue-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .revenue-stat-card {
+        padding: 20px;
+    }
+    .chart-wrapper {
+        height: 300px;
+    }
+    .chart-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+    /* Mobil Menü Toggle ve Header */
+    .mobile-header {
+        display: flex !important;
+        align-items: center;
+        justify-content: start;
+        gap: 12px;
+        padding: 16px;
+        background: white;
+        border-bottom: 1px solid #e9ecef;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        z-index: 2002;
+        height: 80px;
+    }
+    .mobile-menu-toggle {
+        display: block;
+        position: fixed;
+        top: 18px;
+        right: 20px;
+        font-size: 28px;
+        background: white;
+        border: none;
+        color: #218838;
+        z-index: 2100;
+        padding: 8px 12px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    }
+    .mobile-header img {
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+    .mobile-header h1 {
+        font-size: 24px;
+        color: #2c3e50;
+        margin: 0;
+        font-weight: 600;
+    }
+    .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 66px;
+        right: 15px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        z-index: 2099;
+        width: 250px;
+        padding: 16px;
+    }
+    .mobile-menu.open {
+        display: block;
+    }
+    .mobile-menu ul {
+        list-style: none;
+        margin: 0;
+    }
+    .mobile-menu ul li {
+        margin-bottom: 8px;
+    }
+    .mobile-menu ul li a {
+        display: block;
+        color: #2c3e50;
+        text-decoration: none;
+        font-size: 16px;
+        padding: 12px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    .mobile-menu ul li a:hover {
+        background: #f8f9fa;
+        color: #218838;
+    }
+    .revenue-section, .revenue-chart-container {
+        padding: 12px;
+    }
+    .revenue-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .revenue-stat-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .chart-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .revenue-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .revenue-stat-card {
+        flex-direction: row;
+        align-items: center;
+        padding: 10px 12px;
+        min-height: 60px;
+        border-radius: 10px;
+        gap: 10px;
+    }
+    .revenue-stat-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 18px;
+        border-radius: 8px;
+    }
+    .revenue-stat-content h3 {
+        font-size: 18px;
+        margin-bottom: 2px;
+    }
+    .revenue-stat-content p, .revenue-period {
+        font-size: 12px;
+        margin: 0;
+    }
+    .revenue-period {
+        display: block;
+        margin-bottom: 2px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .main-content {
+        padding: 12px;
+    }
+    .dashboard-header {
+        padding: 20px;
+    }
+    .revenue-stat-card {
+        padding: 16px;
+    }
+} 

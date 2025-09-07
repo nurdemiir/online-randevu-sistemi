@@ -1,0 +1,527 @@
+/* Genel ayarlar */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    margin-left: 320px; /* Sidebar'ın genişliği kadar yer açmak için */
+    padding: 20px;
+    padding-top: 55px;
+    flex-direction: column; 
+}
+
+.sidebar {
+    background-color: #ffffff;
+    padding: 20px;
+    width: 300px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 0 8px 8px 0;
+}
+
+.sidebar img {
+    width: 100%;  /* Sidebar genişliğini kaplayacak şekilde ayarlanır */
+    height: 200px; /* Sabit bir yükseklik ayarlanır */
+    object-fit: cover; /* Görüntü, çerçeveye düzgün şekilde sığar */
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.sidebar h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.sidebar h2 {
+    font-size: 20px;
+    color: #218838;
+    margin-bottom: 20px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.sidebar nav ul li {
+    margin: 15px 0;
+}
+
+.sidebar nav ul li a {
+    text-decoration: none;
+    color: #218838;
+    font-size: 18px;
+    padding: 10px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.sidebar nav ul li a:active {
+    transform: scale(0.98);
+}
+
+.main-content {
+    flex-grow: 1;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#add-employee-section, #employee-list-section {
+    margin-bottom: 30px;
+}
+
+#add-employee-section h2, #employee-list-section h2 {
+    border-bottom: 2px solid #218838;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+input[type="text"], button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+button {
+    background-color: #218838;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100px;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #28a745;
+}
+
+#employee-list {
+    list-style: none;
+    padding: 0;
+}
+
+#employee-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    margin-bottom: 15px;
+}
+
+#employee-list li:hover {
+    background-color: #f1f1f1;
+}
+
+.edit-btn, .delete-btn {
+    padding: 10px 15px;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.edit-btn {
+    background-color: #007BFF;
+}
+
+.edit-btn:hover {
+    background-color: #0056b3;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* --- Mobil Menü --- */
+.mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 15px;
+    width: 50px;
+    font-size: 28px;
+    background: none;
+    border: none;
+    background-color: white !important;
+    color: #45a049;
+    z-index: 2001;
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 60px;
+    right: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    z-index: 2000;
+    width: 220px;
+}
+
+.mobile-menu.open {
+    display: block;
+}
+
+.mobile-menu ul {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+}
+
+.mobile-menu ul li {
+    margin-bottom: 10px;
+}
+
+.mobile-menu ul li a {
+    display: block;
+    color: inherit !important;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-menu ul li a:hover {
+    background-color: transparent !important;
+    color: inherit !important;
+}
+
+/* Mobil Header */
+.mobile-header {
+    display: none;
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    padding: 16px 16px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1002;
+}
+
+.mobile-header img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.mobile-header h1 {
+    font-size: 30px;
+    color: #333;
+    margin: 0;
+    font-weight: 600;
+}
+
+.mobile-menu .has-submenu > a::after {
+    content: " ▼";
+    font-size: 12px;
+}
+
+.mobile-menu .submenu {
+    display: none;
+    padding-left: 15px;
+}
+
+.mobile-menu .has-submenu.open .submenu {
+    display: block;
+}
+
+.mobile-menu .submenu li a {
+    padding: 8px 10px;
+    font-size: 14px;
+    display: block;
+    color: #333;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+.mobile-menu .submenu li a:hover {
+    background-color: #e0e0e0;
+}
+
+.checkbox-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 16px;
+}
+
+.checkbox-label {
+    flex: 1;
+    text-align: left;
+}
+
+.services-label {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    display: inline-block;
+}
+
+
+/* Mobil uyumluluk */
+@media (max-width: 768px) {
+    .container {
+        margin-left: 0;
+        flex-direction: column;
+        padding: 0;
+        width: 100%;
+    }
+
+    .tab-bar{
+        display: none;
+    }
+
+    body {
+        overflow-x: hidden;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 16px;
+        margin-top: 20px;
+    }
+
+    .main-content h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .mobile-header {
+        display: flex;
+        padding-top: calc(env(safe-area-inset-top, 0px) + 16px);
+
+    }
+
+    #add-employee-section h2, #employee-list-section h2 {
+        font-size: 20px;
+    }
+
+    input[type="text"], button {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    #employee-list li {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .edit-btn, .delete-btn {
+        padding: 10px 12px;
+        font-size: 12px;
+        margin: 5px 0;
+    }
+}
+
+/* --- STİL İYİLEŞTİRMELERİ (styles6.css tarzında) --- */
+
+.main-content {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+#add-employee-section, #employee-list-section {
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(33,136,56,0.08);
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+#add-employee-section h2, #employee-list-section h2 {
+    font-size: 26px;
+    color: #218838;
+    border-bottom: 2px solid #218838;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+label, .services-label {
+    font-size: 15px;
+    color: #2c3e50;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+input[type="text"] {
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 15px;
+    margin-bottom: 12px;
+    background: #fff;
+    transition: border 0.2s;
+}
+
+input[type="text"]:focus {
+    border: 1.5px solid #218838;
+    outline: none;
+}
+
+button[type="submit"] {
+    background: linear-gradient(135deg, #218838 0%, #28a745 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+    width: 120px;
+}
+
+button[type="submit"]:hover {
+    background: #28a745;
+    box-shadow: 0 4px 16px rgba(33,136,56,0.15);
+}
+
+#employee-list li {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(33,136,56,0.08);
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: box-shadow 0.2s;
+}
+
+#employee-list li:hover {
+    box-shadow: 0 6px 24px rgba(33,136,56,0.13);
+}
+
+.edit-btn, .delete-btn {
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 8px;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.edit-btn {
+    background: #007BFF;
+    color: #fff;
+}
+.edit-btn:hover {
+    background: #0056b3;
+    box-shadow: 0 2px 8px rgba(0,123,255,0.15);
+}
+.delete-btn {
+    background: #dc3545;
+    color: #fff;
+}
+.delete-btn:hover {
+    background: #c82333;
+    box-shadow: 0 2px 8px rgba(220,53,69,0.15);
+}
+
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.checkbox-label {
+    font-size: 15px;
+    color: #333;
+}
+
+.success-message {
+    color: #fff;
+    background: #28a745;
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-size: 14px;
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 12px;
+    }
+    #add-employee-section, #employee-list-section {
+        padding: 12px;
+    }
+    #employee-list li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
+

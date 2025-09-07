@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İşletme Yönetimi - Ayarlar</title>
+    <link rel="stylesheet" href="styles17.css">
+    <script src="/frontend/src/js/businessInfo.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Tab-bar -->
+        <div class="tab-bar">
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Genel Ayarlar</a>
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/randevu_ayarlari/index9.html">Randevu Ayarları</a>
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/galeri_ayarlari/index7.html">Galeri Ayarları</a>
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/iletisim_ayarlari/index11.html">İletişim Ayarları</a>
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/sss_ayarlari/index12.html">SSS Ayarları</a>
+        </div>
+
+        <div class="content">
+            <aside class="sidebar">
+                <img id="business-image" src="/frontend/src/assets/images/default-image.png" alt="İşletme Fotoğrafı">
+                <h1 id="sidebar-h1">Varsayılan İşletme</h1>
+                <h2 id="sidebar-h2">Panel</h2>
+                <nav>
+                    <ul>
+                        <li><a href="/frontend/public/pages/isletme_panel/anasayfa/index6.html">Randevu Yönetimi</a></li>
+                        <li><a href="/frontend/public/pages/isletme_panel/personel/index27.html">Personel Yönetimi</a></li>
+                        <li><a href="/frontend/public/pages/isletme_panel/performans/index30.html" class="active">İşletme Performansı</a></li>
+                        <li><a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Ayarlar</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <button class="mobile-menu-toggle" id="menu-toggle">&#9776;</button>
+            
+            <header class="mobile-header" id="mobile-header">
+                <img id="mobile-business-image" src="/frontend/src/assets/images/default-image.png" alt="İşletme Fotoğrafı" />
+                <h1 id="mobile-business-name">İşletme Adı</h1>
+            </header>
+
+            <div class="mobile-menu" id="mobile-menu">
+                <ul>
+                    <li><a href="/frontend/public/pages/isletme_panel/anasayfa/index6.html">Randevu Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/personel/index27.html">Personel Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/performans/index30.html">İşletme Performansı</a></li>
+                    <li class="has-submenu">
+                        <a href="#">Ayarlar</a>
+                        <ul class="submenu">
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Genel Ayarlar</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/randevu_ayarlari/index9.html">Randevu Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/galeri_ayarlari/index7.html">Galeri Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/iletisim_ayarlari/index11.html">İletişim Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/sss_ayarlari/index12.html">SSS Ayarları</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <main class="main-content">
+                <section class="admin-panel">
+                    <h2>Fotoğraf Ayarları</h2>
+                    <form id="image-upload-form">
+                        <input type="file" id="image-input" accept="image/*">
+                        <button type="submit">Fotoğraf Yükle</button>
+                    </form>
+                </section>
+
+                <section class="update-panel">
+                    <h2>Başlık Ayarları</h2>
+                    <form id="update-form">
+                        <label class="box" for="new-h1">Ana Başlık:</label>
+                        <input class="box" type="text" id="new-h1" placeholder="Ana Başlık">
+                        <label class="box" for="new-h2">Alt Başlık:</label>
+                        <input class="box" type="text" id="new-h2" placeholder="Alt Başlık">
+                        <button type="submit">Güncelle</button>
+                    </form>
+                </section>
+            </main>
+        </div>
+    </div>
+
+<script>
+    // Sayfa yüklendiğinde işletme bilgilerini yükle
+    window.onload = async function () {
+        await loadBusinessInfo();
+    };
+
+    async function loadBusinessInfo() {
+        try {
+            const response = await fetch("http://localhost:8000/api/genel-ayarlar/liste");
+            const ayarlar = await response.json();
+            const ayar = ayarlar[0];
+
+            if (ayar) {
+                // Logo
+                
+                if (ayar.logo) {
+                    document.getElementById("business-image").src = ayar.logo;
+                    const mobileImage = document.getElementById("mobile-business-image");
+                    if (mobileImage) mobileImage.src = ayar.logo;
+                }
+
+                // Ana başlık
+                if (ayar.isletme_adi) {
+                    document.getElementById("sidebar-h1").textContent = ayar.isletme_adi;
+                    const mobileName = document.getElementById("mobile-business-name");
+                    if (mobileName) mobileName.textContent = ayar.isletme_adi;
+                }
+
+                // Alt başlık (aciklama)
+                if (ayar.aciklama) {
+                    const sidebarH2 = document.getElementById("sidebar-h2");
+                    if (sidebarH2) sidebarH2.textContent = ayar.aciklama;
+
+                    const mobileSubtitle = document.getElementById("mobile-business-subtitle");
+                    if (mobileSubtitle) mobileSubtitle.textContent = ayar.aciklama;
+                }
+            }
+        } catch (error) {
+            console.error("Genel ayarlar yüklenemedi:", error);
+            document.getElementById("sidebar-h1").textContent = "İşletme Adı";
+        }
+    }
+
+    // Fotoğraf yükleme işlemi
+    document.getElementById('image-upload-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const imageInput = document.getElementById('image-input').files[0];
+        const isletmeAdi = getIsletmeAdi(); // Mevcut isletme_adi değerini al
+        if (!imageInput) {
+            alert('Lütfen bir fotoğraf seçin.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('isletme_adi', isletmeAdi);
+        formData.append('logo', imageInput);
+
+        try {
+            const response = await fetch('http://localhost:8000/api/genel-ayarlar/', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.status === 'ok') {
+                alert('Fotoğraf başarıyla yüklendi!');
+                await loadBusinessInfo();
+            } else {
+                alert('Fotoğraf yüklenirken hata: ' + JSON.stringify(result.error));
+                console.error('Hata detayları:', result);
+            }
+        } catch (error) {
+            console.error('Fotoğraf yüklenirken hata:', error);
+            alert('Fotoğraf yüklenirken bir hata oluştu.');
+        }
+    });
+
+    // Başlık güncelleme işlemi
+    document.getElementById('update-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const newH1 = document.getElementById('new-h1').value;
+        const newH2 = document.getElementById('new-h2').value;
+
+        if (!newH1 || !newH2) {
+            alert('Lütfen hem ana başlığı hem de alt başlığı doldurun.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('isletme_adi', newH1);
+        formData.append('aciklama', newH2);
+
+        try {
+            const response = await fetch('http://localhost:8000/api/genel-ayarlar/', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.status === 'ok') {
+                alert('Başlıklar başarıyla güncellendi!');
+                await loadBusinessInfo();
+                document.getElementById('new-h1').value = '';
+                document.getElementById('new-h2').value = '';
+            } else {
+                alert('Başlıklar güncellenirken hata: ' + JSON.stringify(result.error));
+                console.error('Hata detayları:', result);
+            }
+        } catch (error) {
+            console.error('Başlıklar güncellenirken hata:', error);
+            alert('Başlıklar güncellenirken bir hata oluştu.');
+        }
+    });
+
+    // Menü açma/kapatma işlemi
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+        document.getElementById("mobile-menu").classList.toggle("open");
+    });
+
+    document.querySelectorAll('.mobile-menu .has-submenu > a').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const parent = this.parentElement;
+            parent.classList.toggle('open');
+        });
+    });
+</script>
+
+</body>
+</html>

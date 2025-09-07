@@ -1,0 +1,376 @@
+/* General settings */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    margin: 0;              
+    padding: 0;            
+}
+
+.container {
+    display: flex;
+    margin-left: 320px;
+    padding: 20px;
+}
+
+/* Sidebar settings */
+.sidebar {
+    background-color: #ffffff;
+    padding: 20px;
+    width: 300px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 0 8px 8px 0;
+}
+
+.sidebar img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.sidebar h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.sidebar h2 {
+    font-size: 20px;
+    color: #007BFF;
+    margin-bottom: 20px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.sidebar nav ul li {
+    margin: 15px 0;
+}
+
+.sidebar nav ul li a {
+    text-decoration: none;
+    color: #007BFF;
+    font-size: 18px;
+    padding: 10px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+.sidebar nav ul li a.active {
+    background-color: #0056b3;
+    color: white;
+}
+
+/* Main content layout */
+.main-content {
+    flex-grow: 1;
+}
+
+.main-content h2 {
+    font-size: 30px;
+    margin-bottom: 30px;
+    color: #333;
+    margin-top: 20px;
+}
+
+/* Service cards layout */
+.service-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two cards per row */
+    gap: 40px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 500px; /* Kart yüksekliği ayarı */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-content {
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the left */
+    justify-content: space-between;
+}
+
+.card-content h4 {
+    color: #007BFF;
+    font-size: 18px;
+    text-align: left; /* Left align the service name */
+    width: 100%; /* Ensure it takes full width */
+}
+
+.card-image {
+    width:  95%;
+    height: 250px; /* Sabit yükseklik */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Taşmaları gizler */
+    background-color: #f0f0f0; /* Yüklenmeyen resimlerde boş zemin */
+    border-radius: 15px;
+    object-fit: contain;
+    margin: auto;
+    margin-top:15px;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Resmi kutuya düzgünce sığdırır */
+    border-radius: 4px;
+    
+}
+
+
+.card-content p {
+    color: #333;
+    text-align: left; /* Left align the description, duration, and price */
+    width: 100%; /* Ensure it takes full width */
+    margin-top: 15px;
+}
+
+.card-button {
+    margin-top: 15px;
+    padding: 8px 12px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.card-button:hover {
+    background-color: #0056b3;
+}
+
+
+/* --- Mobil Menü --- */
+.mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 28px;
+    background: none;
+    border: none;
+    color: #007BFF;
+    z-index: 2001;
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 60px;
+    right: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    z-index: 2000;
+    width: 220px;
+}
+
+.mobile-menu.open {
+    display: block;
+}
+
+.mobile-menu ul {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+}
+
+.mobile-menu ul li {
+    margin-bottom: 10px;
+}
+
+.mobile-menu ul li a {
+    display: block;
+    color: #007BFF;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-menu ul li a:hover {
+    background-color: #f0f0f0;
+}
+
+/* Genel görünüm */
+.mobile-header {
+    display: none;
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    padding: 16px 16px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1002;
+}
+
+/* Görsel */
+.mobile-header img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+/* Başlık */
+.mobile-header h1 {
+    font-size: 30px;
+    color: #333;
+    margin: 0;
+    font-weight: 600;
+}
+
+
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none !important;  /* Mobilde sidebar tamamen kapatıldı */
+    }
+
+    .container {
+        flex-direction: column;
+        margin-left: 0;
+        padding: 0;          /* Bu satırı 10px yerine 0 yap */
+    }
+
+    .main-content {
+        width: 100%;
+        margin-left: 0;
+        padding: 16px;      
+    }
+
+    .mobile-header {
+        display: flex;
+        padding-top: calc(env(safe-area-inset-top, 0px) + 16px);
+    }
+
+    .main-content h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .service-cards {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
+
+    .card {
+        height: auto;
+        min-height: 550px;
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .card-image {
+        width: 100%;
+        height: 250px;
+        overflow: hidden;
+        border-radius: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f0f0f0;
+    }
+
+    .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .card-content {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .card-content h4 {
+        font-size: 18px;
+        margin: 0;
+    }
+
+    .card-content p {
+        font-size: 15px;
+        margin: 0;
+    }
+
+    .card-button {
+        padding: 10px;
+        font-size: 16px;
+        width: 100%;
+        margin-top: auto;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    
+}
+
+@media (max-width: 480px) {
+    .mobile-menu ul li a {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .mobile-header h1 {
+        font-size: 18px;
+    }
+}
+
+

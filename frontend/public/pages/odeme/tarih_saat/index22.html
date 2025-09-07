@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarih ve Saat Seçimi - Randevunu Bul</title>
+    <link rel="stylesheet" href="styles22.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Adım Göstergesi -->
+        <div class="steps-indicator">
+            <div class="step">
+                <div class="step-number">1</div>
+                <span>Hizmet Seçimi</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step active">
+                <div class="step-number">2</div>
+                <span>Tarih & Saat</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <span>Bilgiler</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <span>Onay</span>
+            </div>
+        </div>
+
+        <!-- Ana İçerik -->
+        <div class="form-card">
+            <h2>Tarih ve Saat Seçimi</h2>
+            
+            <div class="appointment-selection">
+                <!-- Seçilen Hizmet Özeti -->
+                <div class="selected-service-summary">
+                    <div class="summary-header">
+                        <h3>Seçilen Hizmet</h3>
+                        <div class="service-price" id="service-price">-</div>
+                    </div>
+                    <div class="summary-content">
+                        <div class="summary-item">
+                            <span class="label">Hizmet:</span>
+                            <span class="value" id="service-name">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="label">Personel:</span>
+                            <span class="value" id="staff-name">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="label">Süre:</span>
+                            <span class="value" id="service-duration">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarih Seçimi -->
+                <div class="date-selection">
+                    <h3>Tarih Seçimi</h3>
+                    <div class="calendar">
+                        <div class="calendar-header">
+                            <button id="prevMonth" class="calendar-nav">&lt;</button>
+                            <h4 id="currentMonth">Ay Yıl</h4>
+                            <button id="nextMonth" class="calendar-nav">&gt;</button>
+                        </div>
+                        <div class="weekdays">
+                            <div>Pzt</div>
+                            <div>Sal</div>
+                            <div>Çar</div>
+                            <div>Per</div>
+                            <div>Cum</div>
+                            <div>Cmt</div>
+                            <div>Paz</div>
+                        </div>
+                        <div class="calendar-days" id="calendarDays"></div>
+                        <input type="hidden" id="date" required>
+                    </div>
+                </div>
+
+                <!-- Saat Seçimi -->
+                <div class="time-selection">
+                    <h3>Saat Seçimi</h3>
+                    <div class="time-slots-grid">
+                        <select id="start-time" required>
+                            <option value="">Saat seçiniz</option>
+                        </select>
+                    </div>
+                    <div class="selected-time">
+                        <span class="label">Seçilen Saat:</span>
+                        <span class="value" id="selected-time-display">-</span>
+                        <span class="end-time" id="end-time-display"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Butonlar -->
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="goBack()">
+                    <i class="fas fa-arrow-left"></i>
+                    Geri Dön
+                </button>
+                <button class="btn btn-primary" id="next-button" onclick="proceedToNext()">
+                    Devam Et
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const BASE_URL = "http://127.0.0.1:8000";
+  const nextButton = document.getElementById('next-button');
+  const startTimeSelect = document.getElementById('start-time');
+  const dateInput = document.getElementById('date');
+
+  let selectedService = null;
+  let acilisSaati = null;
+  let kapanisSaati = null;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const hizmetId = urlParams.get("hizmet_id");
+  const randevuId = urlParams.get("randevu_id");
+
+  try {
+    if (hizmetId) {
+      const hizmetResponse = await fetch(`${BASE_URL}/api/hizmet-detaylari/${hizmetId}/`);
+      const result = await hizmetResponse.json();
+
+      const hizmet = result.hizmet;
+      selectedService = hizmet;
+
+      document.getElementById('service-name').textContent = hizmet.hizmet_adi;
+      document.getElementById('service-price').textContent = `${hizmet.fiyat} ₺`;
+      document.getElementById('service-duration').textContent = `${hizmet.seans_suresi} dakika`;
+
+      // Genel ayar saat bilgisi çekiliyor
+      const ayarResponse = await fetch(`${BASE_URL}/api/genel-ayarlar/saat/`);
+      let ayar = await ayarResponse.json();
+      if (Array.isArray(ayar)) ayar = ayar[0] || {};
+      acilisSaati = ayar.acilis_saati || null;
+      kapanisSaati = ayar.kapanis_saati || null;
+    } else {
+      alert("Hizmet ID'si bulunamadı.");
+    }
+
+    // Personel adı randevu ID üzerinden çekiliyor
+    if (randevuId) {
+      const randevuRes = await fetch(`${BASE_URL}/api/randevu/${randevuId}/`);
+      const randevuData = await randevuRes.json();
+      if (randevuData.personel_adi) {
+        document.getElementById('staff-name').textContent = randevuData.personel_adi;
+      }
+    }
+  } catch (error) {
+    console.error("Veri yüklenirken hata oluştu:", error);
+  }
+
+  // Takvim oluşturma
+  const today = new Date();
+  let currentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+  function updateCalendar() {
+    const monthYear = document.getElementById('currentMonth');
+    monthYear.textContent = currentMonth.toLocaleString('tr-TR', { month: 'long', year: 'numeric' });
+
+    const daysGrid = document.getElementById('calendarDays');
+    daysGrid.innerHTML = '';
+
+    const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
+    const lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
+
+    let firstWeekday = firstDay.getDay();
+    firstWeekday = firstWeekday === 0 ? 6 : firstWeekday - 1;
+
+    for (let i = 0; i < firstWeekday; i++) {
+      const emptyDay = document.createElement('div');
+      emptyDay.className = 'calendar-day empty';
+      daysGrid.appendChild(emptyDay);
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Bugünü saat bazında sıfırla
+
+    for (let day = 1; day <= lastDay.getDate(); day++) {
+      const dayElement = document.createElement('div');
+      dayElement.className = 'calendar-day';
+      dayElement.textContent = day;
+
+      const currentDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+      currentDate.setHours(0, 0, 0, 0); // O günü de sıfırla
+
+      if (currentDate < today) {
+        dayElement.classList.add('disabled');
+      } else {
+        dayElement.classList.add('selectable');
+        dayElement.addEventListener('click', () => {
+          document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+          dayElement.classList.add('selected');
+          dateInput.value = currentDate.getFullYear() + "-" +
+                  String(currentDate.getMonth() + 1).padStart(2, '0') + "-" +
+                  String(currentDate.getDate()).padStart(2, '0');
+
+          updateTimeSlots();
+          checkFormCompletion();
+        });
+      }
+
+      daysGrid.appendChild(dayElement);
+    }
+  }
+
+  document.getElementById('prevMonth').addEventListener('click', () => {
+    const newMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1);
+    if (newMonth.getMonth() >= today.getMonth() || newMonth.getFullYear() > today.getFullYear()) {
+      currentMonth = newMonth;
+      updateCalendar();
+    }
+  });
+
+  document.getElementById('nextMonth').addEventListener('click', () => {
+    currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1);
+    updateCalendar();
+  });
+
+  updateCalendar();
+
+  setTimeout(() => {
+    const selectableDay = document.querySelector('.calendar-day.selectable');
+    if (selectableDay) {
+      selectableDay.click();
+    } else {
+      updateTimeSlots();
+    }
+  }, 100);
+
+  function populateTimeSelect(openingTime, closingTime, serviceDuration) {
+    startTimeSelect.innerHTML = '<option value="">Saat seçiniz</option>';
+
+    const [openH, openM] = openingTime.split(':').map(Number);
+    const [closeH, closeM] = closingTime.split(':').map(Number);
+
+    let currentTime = new Date(0, 0, 0, openH, openM);
+    const closingTimeDate = new Date(0, 0, 0, closeH, closeM);
+
+    const selectedDateStr = dateInput.value;
+    const selectedDate = new Date(selectedDateStr);
+    const now = new Date();
+
+    while (true) {
+      const slotStart = new Date(currentTime);
+      const slotEnd = new Date(currentTime.getTime() + serviceDuration * 60000);
+      if (slotEnd > closingTimeDate) break;
+
+      const hours = slotStart.getHours().toString().padStart(2, '0');
+      const minutes = slotStart.getMinutes().toString().padStart(2, '0');
+
+      const isToday = selectedDate.toDateString() === now.toDateString();
+
+      // ✅ slotDateTime artık seçilen günün tam saatine göre oluşturuluyor
+      const slotDateTime = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        selectedDate.getDate(),
+        slotStart.getHours(),
+        slotStart.getMinutes()
+      );
+
+      if (!isToday || slotDateTime > now) {
+        const option = document.createElement('option');
+        option.value = `${hours}:${minutes}`;
+        option.textContent = `${hours}:${minutes}`;
+        startTimeSelect.appendChild(option);
+      }
+
+      currentTime.setMinutes(currentTime.getMinutes() + 15);
+      if (currentTime >= closingTimeDate) break;
+    }
+  }
+
+
+  function updateTimeSlots() {
+    if (selectedService && acilisSaati && kapanisSaati) {
+      const duration = selectedService.seans_suresi || 60;
+      populateTimeSelect(acilisSaati, kapanisSaati, duration);
+    } else {
+      startTimeSelect.innerHTML = '<option value="">Saat bilgisi bulunamadı</option>';
+    }
+  }
+
+  startTimeSelect.addEventListener('change', () => {
+    const startTime = startTimeSelect.value;
+    if (startTime && selectedService?.seans_suresi) {
+      const [hours, minutes] = startTime.split(':').map(Number);
+      const startDate = new Date();
+      startDate.setHours(hours, minutes);
+      const endDate = new Date(startDate.getTime() + selectedService.seans_suresi * 60000);
+      const endHours = endDate.getHours().toString().padStart(2, '0');
+      const endMinutes = endDate.getMinutes().toString().padStart(2, '0');
+      document.getElementById('end-time-display').textContent = ` - ${endHours}:${endMinutes}`;
+      document.getElementById('selected-time-display').textContent = startTime;
+      checkFormCompletion();
+    }
+  });
+
+  function checkFormCompletion() {
+    const allFilled = dateInput.value.trim() !== "" && startTimeSelect.value.trim() !== "";
+    nextButton.disabled = !allFilled;
+  }
+
+  checkFormCompletion();
+});
+
+function goBack() {
+  window.history.back();
+}
+
+async function proceedToNext() {
+  const date = document.getElementById('date').value;
+  const startTime = document.getElementById('start-time').value;
+  const endTime = document.getElementById('end-time-display').textContent.replace(' - ', '').trim();
+  const urlParams = new URLSearchParams(window.location.search);
+  const randevuId = urlParams.get("randevu_id");
+
+  if (!randevuId || !date || !startTime || !endTime) {
+    alert("Eksik bilgi var. Lütfen tarih ve saat seçiniz.");
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/api/randevu-guncelle/${randevuId}/`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        tarih: date,
+        seans_baslangic: startTime,
+        seans_bitis: endTime
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || result.error) {
+      alert("Güncelleme hatası:\n" + (result.error || JSON.stringify(result)));
+      return;
+    }
+
+    // ✅ Bilgiler başarıyla kaydedildiyse müşteri bilgisi sayfasına geç
+    window.location.href = `../musteri_bilgileri/index23.html?randevu_id=${randevuId}`;
+  } catch (error) {
+    console.error("Güncelleme hatası:", error);
+    alert("Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edin.");
+  }
+}
+
+</script>
+
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İşletme Yönetimi - Galeri Ayarları</title>
+    <link rel="stylesheet" href="styles7.css">
+    <script src="/frontend/src/js/businessInfo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+</head>
+<body>
+        <div class="container">
+            <!-- Tab-bar -->
+        <div class="tab-bar">
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Genel Ayarlar</a>
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/randevu_ayarlari/index9.html">Randevu Ayarları</a>
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/galeri_ayarlari/index7.html">Galeri Ayarları</a>
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/iletisim_ayarlari/index11.html">İletişim Ayarları</a>
+            <a href="/frontend/public/pages/isletme_panel/ayarlar/sss_ayarlari/index12.html">SSS Ayarları</a>
+        </div>
+
+        <div class="content">
+            <aside class="sidebar">
+                <img id="business-image" src="/frontend/src/assets/images/default-image.png" alt="İşletme Fotoğrafı">
+                <h1 id="sidebar-h1">Varsayılan İşletme</h1>
+                <h2 id="sidebar-h2">Panel</h2>
+                <nav>
+                    <ul>
+                        <li><a href="/frontend/public/pages/isletme_panel/anasayfa/index6.html">Randevu Yönetimi</a></li>
+                        <li><a href="/frontend/public/pages/isletme_panel/personel/index27.html">Personel Yönetimi</a></li>
+                        <li><a href="/frontend/public/pages/isletme_panel/performans/index30.html" class="active">İşletme Performansı</a></li>
+                        <li><a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Ayarlar</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <button class="mobile-menu-toggle" id="menu-toggle">&#9776;</button>
+            
+            <header class="mobile-header" id="mobile-header">
+                <img id="mobile-business-image" src="/frontend/src/assets/images/default-image.png" alt="İşletme Fotoğrafı" />
+                <h1 id="mobile-business-name">İşletme Adı</h1>
+            </header>
+
+            <div class="mobile-menu" id="mobile-menu">
+                <ul>
+                    <li><a href="/frontend/public/pages/isletme_panel/anasayfa/index6.html">Randevu Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/personel/index27.html">Personel Yönetimi</a></li>
+                    <li><a href="/frontend/public/pages/isletme_panel/performans/index30.html">İşletme Performansı</a></li>
+                    <li class="has-submenu">
+                        <a href="#">Ayarlar</a>
+                        <ul class="submenu">
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/genel_ayarlar/index17.html">Genel Ayarlar</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/randevu_ayarlari/index9.html">Randevu Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/galeri_ayarlari/index7.html">Galeri Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/iletisim_ayarlari/index11.html">İletişim Ayarları</a></li>
+                            <li><a href="/frontend/public/pages/isletme_panel/ayarlar/sss_ayarlari/index12.html">SSS Ayarları</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <main class="main-content">
+                <section class="admin-panel">
+                    <h2>Fotoğraf Yönetim Paneli</h2>
+                    <form id="galeriForm" enctype="multipart/form-data">
+                        <input type="file" name="resim" id="resimInput" accept="image/*" required />
+                        <button type="submit">Fotoğraf Ekle</button>
+                    </form>
+                    <span id="notification" class="notification">Başarıyla eklendi</span>
+                    <div id="admin-gallery" class="admin-gallery"></div>
+                </section>
+            </main>
+
+        </div>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script>
+    window.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const response = await fetch("http://localhost:8000/api/genel-ayarlar/liste");
+        const ayarlar = await response.json();
+        const ayar = ayarlar[0];
+
+        if (ayar) {
+                if (ayar.logo) {
+                    document.getElementById("business-image").src = ayar.logo;
+                    const mobileImage = document.getElementById("mobile-business-image");
+                    if (mobileImage) mobileImage.src = ayar.logo;
+                }
+
+            if (ayar.isletme_adi) {
+                document.getElementById("sidebar-h1").textContent = ayar.isletme_adi;
+                const mobileName = document.getElementById("mobile-business-name");
+                if (mobileName) mobileName.textContent = ayar.isletme_adi;
+            }
+
+            if (ayar.aciklama) {
+                const subtitle = document.getElementById("sidebar-h2");
+                if (subtitle) subtitle.textContent = ayar.aciklama;
+            }
+        }
+    } catch (error) {
+        console.error("Genel ayarlar alınamadı:", error);
+    }
+});
+
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    async function loadGallery() {
+        try {
+            const isletmeAdi = getIsletmeAdi();
+            const response = await fetch(`http://localhost:8000/api/galeri?isletme_adi=${encodeURIComponent(isletmeAdi)}`);
+            const galeri = await response.json();
+            const adminGallery = document.getElementById('admin-gallery');
+            const gallery = document.getElementById('gallery');
+
+            adminGallery.innerHTML = '';
+            if (gallery) gallery.innerHTML = '';
+
+            if (galeri.length === 0) {
+                if (gallery) gallery.innerHTML = '<p>Henüz galeri fotoğrafı eklenmemiş.</p>';
+                return;
+            }
+
+            galeri.forEach(item => {
+                const adminDiv = document.createElement('div');
+                adminDiv.style.position = 'relative';
+                adminDiv.dataset.id = item.id;
+
+                const imgElement = document.createElement('img');
+                imgElement.src = 'http://localhost:8000' + item.resim;
+                adminDiv.appendChild(imgElement);
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.innerText = 'Sil';
+                deleteBtn.onclick = async function () {
+                    if (confirm('Silmek istediğinizden emin misiniz?')) {
+                        try {
+                            const response = await fetch('http://localhost:8000/api/galeri-sil/', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': getCookie('csrftoken')
+                                },
+                                body: JSON.stringify({ id: item.id })
+                            });
+                            const data = await response.json();
+                            if (data.status === 'ok') {
+                                adminDiv.remove();
+                                await loadGallery();
+                            } else {
+                                alert('Hata: ' + data.error);
+                            }
+                        } catch (error) {
+                            alert('Silme işlemi başarısız: ' + error.message);
+                        }
+                    }
+                };
+                adminDiv.appendChild(deleteBtn);
+                adminGallery.appendChild(adminDiv);
+
+                if (gallery) {
+                    const imgElementGallery = document.createElement('img');
+                    imgElementGallery.src = 'http://localhost:8000' + item.resim;
+                    gallery.appendChild(imgElementGallery);
+                }
+            })
+            
+            new Sortable(adminGallery, {
+                animation: 150,
+                onEnd: async function () {
+                    const order = [...adminGallery.children].map(div => parseInt(div.dataset.id));
+                    try {
+                        const response = await fetch('http://localhost:8000/api/galeri-sira-guncelle/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': getCookie('csrftoken')
+                            },
+                            body: JSON.stringify({ sira: order })
+                        });
+                        const data = await response.json();
+                        if (data.status !== 'ok') {
+                            alert('Sıralama kaydedilemedi: ' + data.error);
+                        }
+                    } catch (error) {
+                        alert('Sıralama hatası: ' + error.message);
+                    }
+                }
+            });
+
+        } catch (error) {
+            console.error('Galeri yüklenirken hata:', error);
+            const gallery = document.getElementById('gallery');
+            if (gallery) {
+                gallery.innerHTML = '<p>Galeri yüklenirken bir hata oluştu.</p>';
+            }
+        }
+    }
+
+    document.getElementById('galeriForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const form = e.target;
+        const formData = new FormData(form);
+        formData.append('isletme_adi', getIsletmeAdi());
+        const notification = document.getElementById('notification');
+
+        try {
+            const response = await fetch('http://localhost:8000/api/galeri-ekle/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: formData
+            });
+            const data = await response.json();
+            if (data.status === 'ok') {
+                notification.textContent = 'Fotoğraf başarıyla eklendi!';
+                notification.classList.add('show');
+                setTimeout(() => notification.classList.remove('show'), 2000);
+                form.reset();
+                await loadGallery();
+            } else {
+                notification.textContent = 'Hata: ' + data.error;
+                notification.classList.add('show', 'error');
+                setTimeout(() => notification.classList.remove('show', 'error'), 2000);
+            }
+        } catch (error) {
+            notification.textContent = 'Hata: ' + error.message;
+            notification.classList.add('show', 'error');
+            setTimeout(() => notification.classList.remove('show', 'error'), 2000);
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', async function () {
+        await loadBusinessInfo();
+        await loadGallery();
+    });
+
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+        document.getElementById("mobile-menu").classList.toggle("open");
+    });
+
+    document.querySelectorAll('.mobile-menu .has-submenu > a').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const parent = this.parentElement;
+            parent.classList.toggle('open');
+        });
+    });
+
+    function getIsletmeAdi() {
+        return document.getElementById("sidebar-h1")?.textContent || "Varsayılan İşletme";
+    }
+</script>
+
+
+</body>
+</html>
